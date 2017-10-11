@@ -1,0 +1,1257 @@
+{
+  "{\"filename\":\"/app/app.js\",\"env\":{},\"retainLines\":false,\"highlightCode\":true,\"suppressDeprecationMessages\":false,\"presets\":[],\"plugins\":[[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],{\"loose\":false,\"spec\":false}],[[],null],[[],null],[[],{\"spec\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"async\":false,\"asyncGenerators\":false}]],\"ignore\":[],\"code\":true,\"metadata\":true,\"ast\":true,\"comments\":true,\"compact\":\"auto\",\"minified\":false,\"sourceRoot\":\"/app\",\"babelrc\":true,\"sourceType\":\"module\",\"moduleIds\":false,\"passPerPreset\":false,\"parserOpts\":false,\"generatorOpts\":false}:6.24.1": {
+    "metadata": {
+      "usedHelpers": [
+        "interopRequireDefault"
+      ],
+      "marked": [],
+      "modules": {
+        "imports": [
+          {
+            "source": "express",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "express"
+              }
+            ]
+          },
+          {
+            "source": "express-handlebars",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "exphbs"
+              }
+            ]
+          }
+        ],
+        "exports": {
+          "exported": [],
+          "specifiers": []
+        }
+      }
+    },
+    "options": {
+      "filename": "/app/app.js",
+      "filenameRelative": "/app/app.js",
+      "env": {},
+      "retainLines": false,
+      "highlightCode": true,
+      "suppressDeprecationMessages": false,
+      "presets": [],
+      "plugins": [
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false,
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "async": false,
+            "asyncGenerators": false
+          }
+        ]
+      ],
+      "ignore": [],
+      "code": true,
+      "metadata": true,
+      "ast": false,
+      "comments": true,
+      "compact": "auto",
+      "minified": false,
+      "sourceMaps": "both",
+      "sourceMapTarget": "app.js",
+      "sourceFileName": "app.js",
+      "sourceRoot": "/app",
+      "babelrc": false,
+      "sourceType": "module",
+      "moduleRoot": "/app",
+      "moduleIds": false,
+      "passPerPreset": false,
+      "parserOpts": false,
+      "generatorOpts": false,
+      "basename": "app"
+    },
+    "ignored": false,
+    "code": "'use strict';\n\nvar _express = require('express');\n\nvar _express2 = _interopRequireDefault(_express);\n\nvar _expressHandlebars = require('express-handlebars');\n\nvar _expressHandlebars2 = _interopRequireDefault(_expressHandlebars);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar moment = require('moment');\nvar _ = require('lodash');\nvar requestPromise = require('request-promise-native');\nvar qs = require('querystring');\n\nvar _require = require('./view-models-and-helpers.js'),\n    searchResultViewmodel = _require.searchResultViewmodel,\n    flightStartsAfterTime = _require.flightStartsAfterTime,\n    flightEndsAfterTime = _require.flightEndsAfterTime,\n    flightStartsAndEndsWithinHoursOnSameDay = _require.flightStartsAndEndsWithinHoursOnSameDay,\n    flightStartsOnDays = _require.flightStartsOnDays,\n    timeOnDate = _require.timeOnDate;\n\nvar queryParams = {\n  typeFlight: 'round',\n  // flyDaysType: 'departure',\n  // returnFlyDaysType: 'arrival',\n\n  flyFrom: ['SFO', 'OAK', 'SJC'].join(','),\n  to: ['BDL', 'HVN',\n\n  // 'BWI',\n  // 'DCA',\n  // 'IAD',\n\n  'EWR', 'JFK', 'LGA', 'PHL', 'ABE', 'ACY', 'ALB', 'AOO', 'AVP', 'BGM', 'ELM', 'HGR', 'HPN', 'IPT', 'ISP', 'ITH', 'LNS', 'MDT', 'MMU', 'PVD', 'SBY', 'SCE', 'SWF', 'TTN'\n  //'BDL,BWI,DCA,EWR,HVN,IAD,JFK,LGA,PHL,BOS',//'40.22--74.74-325km',//'40.79--74.27-325km',//https://www.mapdevelopers.com/draw-circle-tool.php\n  ].join(','),\n  dateFrom: '17/11/2017',\n  dateTo: '23/11/2017',\n  returnFrom: '24/11/2017', //'23/11/2017',\n  returnTo: '27/11/2017',\n\n  // 'flyDays[]': '5',\n  // flyDaysType: 'departure',\n\n  // selectedStopoverAirports: 'IAD,DCA,BWI',\n  // selectedStopoverAirportsExclude: false,\n\n  passengers: 1,\n  adults: 1,\n  children: 0,\n  infants: 0,\n\n  price_from: 0,\n  price_to: 1100,\n\n  curr: 'USD',\n  locale: 'en',\n  innerLimit: 300,\n  limit: 200,\n  sort: 'quality'\n};\n\nvar getResults = function getResults(uriGenerator) {\n  var resultsSoFar = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];\n\n  return requestPromise(uriGenerator()).then(function (rawResponse) {\n    return JSON.parse(rawResponse);\n  }).then(function (response) {\n    resultsSoFar = resultsSoFar.concat(response.data);\n    console.log(resultsSoFar.length + ' results so far of ' + response._results);\n    if (response._next) {\n      return getResults(uriGenerator, resultsSoFar);\n    }\n    return resultsSoFar;\n  });\n};\n\nvar makeUrlWithOffset = function makeUrlWithOffset(offset) {\n  var queryString = qs.stringify(Object.assign({ offset: offset }, queryParams));\n  return 'https://api.skypicker.com/flights?' + queryString;\n};\n\nvar offsetUrlGenerator = function offsetUrlGenerator() {\n  var offset = 0;\n  return function () {\n    var returnUrl = makeUrlWithOffset(offset);\n    offset += 200;\n    return returnUrl;\n  };\n};\n\nvar resultsPromise = new Promise(function (resolve, reject) {\n  var uriGenerator = offsetUrlGenerator();\n  resolve(getResults(uriGenerator));\n});\n\nvar app = (0, _express2.default)();\n\napp.engine('.hbs', (0, _expressHandlebars2.default)({\n  extname: '.hbs',\n  defaultLayout: 'main',\n  partialsDir: 'views/partials',\n  layoutsDir: 'views/layouts'\n}));\napp.set('view engine', '.hbs');\n\napp.use(_express2.default.static('public'));\n\napp.get('/', function (request, response) {\n  //   const queryParams = {\n  //     typeFlight: 'round',\n  //     flyDaysType: 'departure',\n  //     returnFlyDaysType: 'arrival',\n\n  //     flyFrom: '37.8--122.27-74km',\n  //     to: '40.79--74.27-325km',\n  //     dateFrom: '17/11/2017',\n  //     dateTo: '23/11/2017',\n  //     returnFrom: '23/11/2017',\n  //     returnTo: '27/11/2017',\n\n  //     passengers: 1,\n  //     adults: 1,\n  //     children: 0,\n  //     infants: 0,\n\n  //     price_from: 0,\n  //     price_to: 1100,\n\n  //     curr: 'USD',\n  //     locale: 'en',\n  //     innerLimit: 300,\n  //     sort: 'quality',\n  //   };\n  return resultsPromise.then(function (results) {\n    var searchResults = _(results).map(searchResultViewmodel).filter(function (_ref) {\n      var there = _ref.there,\n          back = _ref.back;\n\n      var musts = [flightStartsAndEndsWithinHoursOnSameDay(there, '05:00', '24:00') && flightStartsAndEndsWithinHoursOnSameDay(back, '05:00', '24:00'), timeOnDate(back.start.time, '2017-11-24') && flightStartsAfterTime(back, 13 + 4 + ':00') || !timeOnDate(back.start.time, '2017-11-24')];\n      var options = [\n      // (\n      //   flightStartsAndEndsWithinHoursOnSameDay(there, '05:00', '24:00') &&\n      //   flightStartsAndEndsWithinHoursOnSameDay(back, '05:00', '24:00')\n      // ),\n      // (\n      //   flightStartsOnDays(there, ['Friday']) && flightStartsAfterTime(there, '15:30')\n      // ),\n      // (\n      //   flightStartsOnDays(back, ['Sunday']) && flightStartsAfterTime(there, '05:00')\n      // ),\n      // (\n      //   flightStartsOnDays(back, ['Saturday']) && flightStartsAfterTime(there, '13:00')\n      // ),\n      // flightStartsOnDays(there, ['Friday', 'Saturday', 'Sunday']) && flightStartsAfterTime(there, '13:00'),\n      // flightStartsOnDays(there, ['Wednesday', 'Saturday', 'Sunday']) //&&\n      // flightStartsAndEndsWithinHoursOnSameDay(there, '05:00', '24:00') &&\n      // flightStartsAndEndsWithinHoursOnSameDay(back, '05:00', '24:00')\n      true];\n      var mustnots = [['EWR', 'LGA', 'JFK'].includes(there.end.to) && flightEndsAfterTime(there, 24 - 5 + ':00'), ['EWR', 'LGA', 'JFK'].includes(back.start.from) && !flightStartsAfterTime(back, 5 + 5 + ':00'), timeOnDate(there.end.time, '2017-11-23') && flightEndsAfterTime(there, '0' + (11 - 4) + ':00'), timeOnDate(back.end.time, '2017-11-27') && flightEndsAfterTime(back, 13 - 2 + ':30'), timeOnDate(there.start.time, '2017-11-23') && timeOnDate(there.end.time, '2017-11-24')];\n      return _.every(musts) && _.some(options) && !_.some(mustnots);\n    }).sortBy('effectiveWeight.number').value();\n    response.render('flights', { searchResults: searchResults });\n  });\n});\n\nvar listener = app.listen(process.env.PORT, function () {\n  return console.log('Your app is listening on port ' + listener.address().port);\n});\n\n// import calculate from './calculate.js';\n\n// import moment from 'moment';\n\n// import requestPromise from 'request-promise-native';\n// import qs from 'querystring';\n\n// import express from 'express';\n// import exphbs from 'express-handlebars';\n\n\n// var app = express();\n\n// app.engine('.hbs', exphbs({\n//   extname: '.hbs',\n//   defaultLayout: 'main',\n//   partialsDir: 'views/partials',\n//   layoutsDir: 'views/layouts'\n// }));\n// app.set('view engine', '.hbs');\n\n// app.use(express.static('public'));\n\n// app.get('/', function (request, response) {\n//   const queryParams = {\n//     typeFlight: 'round',\n//     flyDaysType: 'departure',\n//     returnFlyDaysType: 'arrival',\n\n//     flyFrom: '37.8--122.27-74km',\n//     to: '40.79--74.27-325km',\n//     dateFrom: '17/11/2017',\n//     dateTo: '23/11/2017',\n//     returnFrom: '23/11/2017',\n//     returnTo: '27/11/2017',\n\n//     passengers: 1,\n//     adults: 1,\n//     children: 0,\n//     infants: 0,\n\n//     price_from: 0,\n//     price_to: 1100,\n\n//     curr: 'USD',\n//     locale: 'en',\n//     innerLimit: 300,\n//     sort: 'quality',\n//   };\n//   return requestPromise(`https://api.skypicker.com/flights?${qs.stringify(queryParams)}`)\n//     .then((rawResult) => {\n//       // let {} = request.query;\n//       const result = JSON.parse(rawResult);\n//       response.render('flights', {\n//         items: result.data.map(({\n//           price,\n//           route,\n//         }) => {\n//           const timeFormat = 'YYYY-MM-DD h:mm:ss';\n//           const theRoute = route\n//               .map(({ \n//                 airline,\n//                 flight_no,\n//                 flyFrom,\n//                 flyTo,\n//                 return: isReturn,\n\n//                 dTime: departureTime,\n//                 dTimeUTC: departureTimeUTC,\n//                 aTime: arrivalTime,\n//                 aTimeUTC: arrivalTimeUTC,\n//               }) => {\n//                 return {\n//                   airline,\n//                   flight_no,\n//                   flyFrom,\n//                   flyTo,\n//                   direction: isReturn ? 'Back' : 'There',\n\n//                   departureTime: moment(departureTime * 1000).format(timeFormat),\n//                   departureTimeUTC: moment.utc(departureTimeUTC * 1000).format(timeFormat),\n//                   arrivalTime: moment(arrivalTime * 1000).format(timeFormat),\n//                   arrivalTimeUTC: moment.utc(arrivalTimeUTC * 1000).format(timeFormat),\n//                 };\n//               });\n//           const there = {\n//             flights: theRoute.filter(flight => flight.direction === 'Back'),\n//             start: {\n//               time,\n//               location,\n//             },\n//             end: {\n//               time,\n//               location,\n//             },\n//             length,\n//             layovertime,\n//           };\n//           const back = {\n//             flights: theRoute.filter(flight => flight.direction === 'There'),\n//             start: {\n//               time,\n//               location,\n//             },\n//             end: {\n//               time,\n//               location,\n//             },\n//             length,\n//             layovertime,\n//           };\n//           return {\n//             price,\n\n//             there,\n//             back,\n//           };\n//         })\n//       });\n//     })\n// });\n\n// var listener = app.listen(process.env.PORT, () => console.log('Your app is listening on port ' + listener.address().port));\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFwcC5qcyJdLCJuYW1lcyI6WyJtb21lbnQiLCJyZXF1aXJlIiwiXyIsInJlcXVlc3RQcm9taXNlIiwicXMiLCJzZWFyY2hSZXN1bHRWaWV3bW9kZWwiLCJmbGlnaHRTdGFydHNBZnRlclRpbWUiLCJmbGlnaHRFbmRzQWZ0ZXJUaW1lIiwiZmxpZ2h0U3RhcnRzQW5kRW5kc1dpdGhpbkhvdXJzT25TYW1lRGF5IiwiZmxpZ2h0U3RhcnRzT25EYXlzIiwidGltZU9uRGF0ZSIsInF1ZXJ5UGFyYW1zIiwidHlwZUZsaWdodCIsImZseUZyb20iLCJqb2luIiwidG8iLCJkYXRlRnJvbSIsImRhdGVUbyIsInJldHVybkZyb20iLCJyZXR1cm5UbyIsInBhc3NlbmdlcnMiLCJhZHVsdHMiLCJjaGlsZHJlbiIsImluZmFudHMiLCJwcmljZV9mcm9tIiwicHJpY2VfdG8iLCJjdXJyIiwibG9jYWxlIiwiaW5uZXJMaW1pdCIsImxpbWl0Iiwic29ydCIsImdldFJlc3VsdHMiLCJ1cmlHZW5lcmF0b3IiLCJyZXN1bHRzU29GYXIiLCJ0aGVuIiwiSlNPTiIsInBhcnNlIiwicmF3UmVzcG9uc2UiLCJjb25jYXQiLCJyZXNwb25zZSIsImRhdGEiLCJjb25zb2xlIiwibG9nIiwibGVuZ3RoIiwiX3Jlc3VsdHMiLCJfbmV4dCIsIm1ha2VVcmxXaXRoT2Zmc2V0IiwicXVlcnlTdHJpbmciLCJzdHJpbmdpZnkiLCJPYmplY3QiLCJhc3NpZ24iLCJvZmZzZXQiLCJvZmZzZXRVcmxHZW5lcmF0b3IiLCJyZXR1cm5VcmwiLCJyZXN1bHRzUHJvbWlzZSIsIlByb21pc2UiLCJyZXNvbHZlIiwicmVqZWN0IiwiYXBwIiwiZW5naW5lIiwiZXh0bmFtZSIsImRlZmF1bHRMYXlvdXQiLCJwYXJ0aWFsc0RpciIsImxheW91dHNEaXIiLCJzZXQiLCJ1c2UiLCJzdGF0aWMiLCJnZXQiLCJyZXF1ZXN0Iiwic2VhcmNoUmVzdWx0cyIsInJlc3VsdHMiLCJtYXAiLCJmaWx0ZXIiLCJ0aGVyZSIsImJhY2siLCJtdXN0cyIsInN0YXJ0IiwidGltZSIsIm9wdGlvbnMiLCJtdXN0bm90cyIsImluY2x1ZGVzIiwiZW5kIiwiZnJvbSIsImV2ZXJ5Iiwic29tZSIsInNvcnRCeSIsInZhbHVlIiwicmVuZGVyIiwibGlzdGVuZXIiLCJsaXN0ZW4iLCJwcm9jZXNzIiwiZW52IiwiUE9SVCIsImFkZHJlc3MiLCJwb3J0Il0sIm1hcHBpbmdzIjoiOztBQUtBOzs7O0FBQ0E7Ozs7OztBQU5BLElBQU1BLFNBQVNDLFFBQVEsUUFBUixDQUFmO0FBQ0EsSUFBTUMsSUFBSUQsUUFBUSxRQUFSLENBQVY7QUFDQSxJQUFNRSxpQkFBaUJGLFFBQVEsd0JBQVIsQ0FBdkI7QUFDQSxJQUFNRyxLQUFLSCxRQUFRLGFBQVIsQ0FBWDs7ZUFhSUEsUUFBUSw4QkFBUixDO0lBUEZJLHFCLFlBQUFBLHFCO0lBRUFDLHFCLFlBQUFBLHFCO0lBQ0FDLG1CLFlBQUFBLG1CO0lBQ0FDLHVDLFlBQUFBLHVDO0lBQ0FDLGtCLFlBQUFBLGtCO0lBQ0FDLFUsWUFBQUEsVTs7QUFHRixJQUFNQyxjQUFjO0FBQ2xCQyxjQUFZLE9BRE07QUFFbEI7QUFDQTs7QUFFQUMsV0FBUyxDQUNQLEtBRE8sRUFFUCxLQUZPLEVBR1AsS0FITyxFQUlQQyxJQUpPLENBSUYsR0FKRSxDQUxTO0FBVWxCQyxNQUFJLENBQ0YsS0FERSxFQUVGLEtBRkU7O0FBSUY7QUFDQTtBQUNBOztBQUVBLE9BUkUsRUFTRixLQVRFLEVBVUYsS0FWRSxFQVlGLEtBWkUsRUFjRixLQWRFLEVBZUYsS0FmRSxFQWdCRixLQWhCRSxFQWlCRixLQWpCRSxFQWtCRixLQWxCRSxFQW1CRixLQW5CRSxFQW9CRixLQXBCRSxFQXFCRixLQXJCRSxFQXNCRixLQXRCRSxFQXVCRixLQXZCRSxFQXdCRixLQXhCRSxFQXlCRixLQXpCRSxFQTBCRixLQTFCRSxFQTJCRixLQTNCRSxFQTRCRixLQTVCRSxFQTZCRixLQTdCRSxFQThCRixLQTlCRSxFQStCRixLQS9CRSxFQWdDRixLQWhDRSxFQWlDRjtBQUNBO0FB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QUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOztBQUVBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOztBQUVBIiwiZmlsZSI6ImFwcC5qcyIsInNvdXJjZVJvb3QiOiIvYXBwIiwic291cmNlc0NvbnRlbnQiOlsiY29uc3QgbW9tZW50ID0gcmVxdWlyZSgnbW9tZW50Jyk7XG5jb25zdCBfID0gcmVxdWlyZSgnbG9kYXNoJyk7XG5jb25zdCByZXF1ZXN0UHJvbWlzZSA9IHJlcXVpcmUoJ3JlcXVlc3QtcHJvbWlzZS1uYXRpdmUnKTtcbmNvbnN0IHFzID0gcmVxdWlyZSgncXVlcnlzdHJpbmcnKTtcblxuaW1wb3J0IGV4cHJlc3MgZnJvbSAnZXhwcmVzcyc7XG5pbXBvcnQgZXhwaGJzIGZyb20gJ2V4cHJlc3MtaGFuZGxlYmFycyc7XG5cbmNvbnN0IHtcbiAgc2VhcmNoUmVzdWx0Vmlld21vZGVsLFxuXG4gIGZsaWdodFN0YXJ0c0FmdGVyVGltZSxcbiAgZmxpZ2h0RW5kc0FmdGVyVGltZSxcbiAgZmxpZ2h0U3RhcnRzQW5kRW5kc1dpdGhpbkhvdXJzT25TYW1lRGF5LFxuICBmbGlnaHRTdGFydHNPbkRheXMsXG4gIHRpbWVPbkRhdGUsXG59ID0gcmVxdWlyZSgnLi92aWV3LW1vZGVscy1hbmQtaGVscGVycy5qcycpO1xuXG5jb25zdCBxdWVyeVBhcmFtcyA9IHtcbiAgdHlwZUZsaWdodDogJ3JvdW5kJyxcbiAgLy8gZmx5RGF5c1R5cGU6ICdkZXBhcnR1cmUnLFxuICAvLyByZXR1cm5GbHlEYXlzVHlwZTogJ2Fycml2YWwnLFxuXG4gIGZseUZyb206IFtcbiAgICAnU0ZPJyxcbiAgICAnT0FLJyxcbiAgICAnU0pDJyxcbiAgXS5qb2luKCcsJyksXG4gIHRvOiBbXG4gICAgJ0JETCcsXG4gICAgJ0hWTicsXG5cbiAgICAvLyAnQldJJyxcbiAgICAvLyAnRENBJyxcbiAgICAvLyAnSUFEJyxcblxuICAgICdFV1InLFxuICAgICdKRksnLFxuICAgICdMR0EnLFxuXG4gICAgJ1BITCcsXG5cbiAgICAnQUJFJyxcbiAgICAnQUNZJyxcbiAgICAnQUxCJyxcbiAgICAnQU9PJyxcbiAgICAnQVZQJyxcbiAgICAnQkdNJyxcbiAgICAnRUxNJyxcbiAgICAnSEdSJyxcbiAgICAnSFBOJyxcbiAgICAnSVBUJyxcbiAgICAnSVNQJyxcbiAgICAnSVRIJyxcbiAgICAnTE5TJyxcbiAgICAnTURUJyxcbiAgICAnTU1VJyxcbiAgICAnUFZEJyxcbiAgICAnU0JZJyxcbiAgICAnU0NFJyxcbiAgICAnU1dGJyxcbiAgICAnVFROJ1xuICAgIC8vJ0JETCxCV0ksRENBLEVXUixIVk4sSUFELEpGSyxMR0EsUEhMLEJPUycsLy8nNDAuMjItLTc0Ljc0LTMyNWttJywvLyc0MC43OS0tNzQuMjctMzI1a20nLC8vaHR0cHM6Ly93d3cubWFwZGV2ZWxvcGVycy5jb20vZHJhdy1jaXJjbGUtdG9vbC5waHBcbiAgXS5qb2luKCcsJyksXG4gIGRhdGVGcm9tOiAnMTcvMTEvMjAxNycsXG4gIGRhdGVUbzogJzIzLzExLzIwMTcnLFxuICByZXR1cm5Gcm9tOiAnMjQvMTEvMjAxNycsLy8nMjMvMTEvMjAxNycsXG4gIHJldHVyblRvOiAnMjcvMTEvMjAxNycsXG5cbiAgLy8gJ2ZseURheXNbXSc6ICc1JyxcbiAgLy8gZmx5RGF5c1R5cGU6ICdkZXBhcnR1cmUnLFxuXG4gIC8vIHNlbGVjdGVkU3RvcG92ZXJBaXJwb3J0czogJ0lBRCxEQ0EsQldJJyxcbiAgLy8gc2VsZWN0ZWRTdG9wb3ZlckFpcnBvcnRzRXhjbHVkZTogZmFsc2UsXG5cbiAgcGFzc2VuZ2VyczogMSxcbiAgYWR1bHRzOiAxLFxuICBjaGlsZHJlbjogMCxcbiAgaW5mYW50czogMCxcblxuICBwcmljZV9mcm9tOiAwLFxuICBwcmljZV90bzogMTEwMCxcblxuICBjdXJyOiAnVVNEJyxcbiAgbG9jYWxlOiAnZW4nLFxuICBpbm5lckxpbWl0OiAzMDAsXG4gIGxpbWl0OiAyMDAsXG4gIHNvcnQ6ICdxdWFsaXR5Jyxcbn07XG5cbmNvbnN0IGdldFJlc3VsdHMgPSAodXJpR2VuZXJhdG9yLCByZXN1bHRzU29GYXIgPSBbXSkgPT4ge1xuICByZXR1cm4gcmVxdWVzdFByb21pc2UodXJpR2VuZXJhdG9yKCkpXG4gICAgLnRoZW4ocmF3UmVzcG9uc2UgPT4ge1xuICAgICAgcmV0dXJuIEpTT04ucGFyc2UocmF3UmVzcG9uc2UpO1xuICAgIH0pXG4gICAgLnRoZW4ocmVzcG9uc2UgPT4ge1xuICAgICAgcmVzdWx0c1NvRmFyID0gcmVzdWx0c1NvRmFyLmNvbmNhdChyZXNwb25zZS5kYXRhKTtcbiAgICAgIGNvbnNvbGUubG9nKHJlc3VsdHNTb0Zhci5sZW5ndGggKyAnIHJlc3VsdHMgc28gZmFyIG9mICcgKyByZXNwb25zZS5fcmVzdWx0cyk7XG4gICAgICBpZiAocmVzcG9uc2UuX25leHQpIHtcbiAgICAgICAgcmV0dXJuIGdldFJlc3VsdHModXJpR2VuZXJhdG9yLCByZXN1bHRzU29GYXIpO1xuICAgICAgfVxuICAgICAgcmV0dXJuIHJlc3VsdHNTb0ZhcjtcbiAgICB9KTtcbn1cblxuY29uc3QgbWFrZVVybFdpdGhPZmZzZXQgPSBvZmZzZXQgPT4ge1xuICBjb25zdCBxdWVyeVN0cmluZyA9IHFzLnN0cmluZ2lmeShPYmplY3QuYXNzaWduKHsgb2Zmc2V0IH0sIHF1ZXJ5UGFyYW1zKSk7XG4gIHJldHVybiBgaHR0cHM6Ly9hcGkuc2t5cGlja2VyLmNvbS9mbGlnaHRzPyR7cXVlcnlTdHJpbmd9YDtcbn07XG5cbmNvbnN0IG9mZnNldFVybEdlbmVyYXRvciA9ICgpID0+IHtcbiAgbGV0IG9mZnNldCA9IDA7XG4gIHJldHVybiAoKSA9PiB7XG4gICAgY29uc3QgcmV0dXJuVXJsID0gbWFrZVVybFdpdGhPZmZzZXQob2Zmc2V0KTtcbiAgICBvZmZzZXQgKz0gMjAwO1xuICAgIHJldHVybiByZXR1cm5Vcmw7XG4gIH1cbn07XG5cbmNvbnN0IHJlc3VsdHNQcm9taXNlID0gbmV3IFByb21pc2UoKHJlc29sdmUsIHJlamVjdCkgPT4ge1xuICBjb25zdCB1cmlHZW5lcmF0b3IgPSBvZmZzZXRVcmxHZW5lcmF0b3IoKTtcbiAgcmVzb2x2ZShcbiAgICBnZXRSZXN1bHRzKHVyaUdlbmVyYXRvcilcbiAgKTtcbn0pO1xuXG52YXIgYXBwID0gZXhwcmVzcygpO1xuXG5hcHAuZW5naW5lKCcuaGJzJywgZXhwaGJzKHtcbiAgZXh0bmFtZTogJy5oYnMnLFxuICBkZWZhdWx0TGF5b3V0OiAnbWFpbicsXG4gIHBhcnRpYWxzRGlyOiAndmlld3MvcGFydGlhbHMnLFxuICBsYXlvdXRzRGlyOiAndmlld3MvbGF5b3V0cydcbn0pKTtcbmFwcC5zZXQoJ3ZpZXcgZW5naW5lJywgJy5oYnMnKTtcblxuYXBwLnVzZShleHByZXNzLnN0YXRpYygncHVibGljJykpO1xuXG5hcHAuZ2V0KCcvJywgZnVuY3Rpb24gKHJlcXVlc3QsIHJlc3BvbnNlKSB7XG4vLyAgIGNvbnN0IHF1ZXJ5UGFyYW1zID0ge1xuLy8gICAgIHR5cGVGbGlnaHQ6ICdyb3VuZCcsXG4vLyAgICAgZmx5RGF5c1R5cGU6ICdkZXBhcnR1cmUnLFxuLy8gICAgIHJldHVybkZseURheXNUeXBlOiAnYXJyaXZhbCcsXG5cbi8vICAgICBmbHlGcm9tOiAnMzcuOC0tMTIyLjI3LTc0a20nLFxuLy8gICAgIHRvOiAnNDAuNzktLTc0LjI3LTMyNWttJyxcbi8vICAgICBkYXRlRnJvbTogJzE3LzExLzIwMTcnLFxuLy8gICAgIGRhdGVUbzogJzIzLzExLzIwMTcnLFxuLy8gICAgIHJldHVybkZyb206ICcyMy8xMS8yMDE3Jyxcbi8vICAgICByZXR1cm5UbzogJzI3LzExLzIwMTcnLFxuXG4vLyAgICAgcGFzc2VuZ2VyczogMSxcbi8vICAgICBhZHVsdHM6IDEsXG4vLyAgICAgY2hpbGRyZW46IDAsXG4vLyAgICAgaW5mYW50czogMCxcblxuLy8gICAgIHByaWNlX2Zyb206IDAsXG4vLyAgICAgcHJpY2VfdG86IDExMDAsXG5cbi8vICAgICBjdXJyOiAnVVNEJyxcbi8vICAgICBsb2NhbGU6ICdlbicsXG4vLyAgICAgaW5uZXJMaW1pdDogMzAwLFxuLy8gICAgIHNvcnQ6ICdxdWFsaXR5Jyxcbi8vICAgfTtcbiAgcmV0dXJuIHJlc3VsdHNQcm9taXNlXG4gICAgLnRoZW4ocmVzdWx0cyA9PiB7XG4gICAgICBjb25zdCBzZWFyY2hSZXN1bHRzID0gXyhyZXN1bHRzKVxuICAgICAgICAubWFwKHNlYXJjaFJlc3VsdFZpZXdtb2RlbClcbiAgICAgICAgLmZpbHRlcigoeyB0aGVyZSwgYmFjayB9KSA9PiB7XG4gICAgICAgICAgY29uc3QgbXVzdHMgPSBbXG4gICAgICAgICAgICBmbGlnaHRTdGFydHNBbmRFbmRzV2l0aGluSG91cnNPblNhbWVEYXkodGhlcmUsICcwNTowMCcsICcyNDowMCcpICYmXG4gICAgICAgICAgICAgIGZsaWdodFN0YXJ0c0FuZEVuZHNXaXRoaW5Ib3Vyc09uU2FtZURheShiYWNrLCAnMDU6MDAnLCAnMjQ6MDAnKSxcbiAgICAgICAgICAgICh0aW1lT25EYXRlKGJhY2suc3RhcnQudGltZSwgJzIwMTctMTEtMjQnKSAmJiBmbGlnaHRTdGFydHNBZnRlclRpbWUoYmFjaywgYCR7MTMrNH06MDBgKSkgfHwgXG4gICAgICAgICAgICAgICF0aW1lT25EYXRlKGJhY2suc3RhcnQudGltZSwgJzIwMTctMTEtMjQnKVxuICAgICAgICAgIF07XG4gICAgICAgICAgY29uc3Qgb3B0aW9ucyA9IFtcbiAgICAgICAgICAgIC8vIChcbiAgICAgICAgICAgIC8vICAgZmxpZ2h0U3RhcnRzQW5kRW5kc1dpdGhpbkhvdXJzT25TYW1lRGF5KHRoZXJlLCAnMDU6MDAnLCAnMjQ6MDAnKSAmJlxuICAgICAgICAgICAgLy8gICBmbGlnaHRTdGFydHNBbmRFbmRzV2l0aGluSG91cnNPblNhbWVEYXkoYmFjaywgJzA1OjAwJywgJzI0OjAwJylcbiAgICAgICAgICAgIC8vICksXG4gICAgICAgICAgICAvLyAoXG4gICAgICAgICAgICAvLyAgIGZsaWdodFN0YXJ0c09uRGF5cyh0aGVyZSwgWydGcmlkYXknXSkgJiYgZmxpZ2h0U3RhcnRzQWZ0ZXJUaW1lKHRoZXJlLCAnMTU6MzAnKVxuICAgICAgICAgICAgLy8gKSxcbiAgICAgICAgICAgIC8vIChcbiAgICAgICAgICAgIC8vICAgZmxpZ2h0U3RhcnRzT25EYXlzKGJhY2ssIFsnU3VuZGF5J10pICYmIGZsaWdodFN0YXJ0c0FmdGVyVGltZSh0aGVyZSwgJzA1OjAwJylcbiAgICAgICAgICAgIC8vICksXG4gICAgICAgICAgICAvLyAoXG4gICAgICAgICAgICAvLyAgIGZsaWdodFN0YXJ0c09uRGF5cyhiYWNrLCBbJ1NhdHVyZGF5J10pICYmIGZsaWdodFN0YXJ0c0FmdGVyVGltZSh0aGVyZSwgJzEzOjAwJylcbiAgICAgICAgICAgIC8vICksXG4gICAgICAgICAgICAvLyBmbGlnaHRTdGFydHNPbkRheXModGhlcmUsIFsnRnJpZGF5JywgJ1NhdHVyZGF5JywgJ1N1bmRheSddKSAmJiBmbGlnaHRTdGFydHNBZnRlclRpbWUodGhlcmUsICcxMzowMCcpLFxuICAgICAgICAgICAgLy8gZmxpZ2h0U3RhcnRzT25EYXlzKHRoZXJlLCBbJ1dlZG5lc2RheScsICdTYXR1cmRheScsICdTdW5kYXknXSkgLy8mJlxuICAgICAgICAgICAgICAvLyBmbGlnaHRTdGFydHNBbmRFbmRzV2l0aGluSG91cnNPblNhbWVEYXkodGhlcmUsICcwNTowMCcsICcyNDowMCcpICYmXG4gICAgICAgICAgICAgIC8vIGZsaWdodFN0YXJ0c0FuZEVuZHNXaXRoaW5Ib3Vyc09uU2FtZURheShiYWNrLCAnMDU6MDAnLCAnMjQ6MDAnKVxuICAgICAgICAgICAgdHJ1ZVxuICAgICAgICAgIF07XG4gICAgICAgICAgY29uc3QgbXVzdG5vdHMgPSBbXG4gICAgICAgICAgICBbJ0VXUicsICdMR0EnLCAnSkZLJ10uaW5jbHVkZXModGhlcmUuZW5kLnRvKSAmJiBmbGlnaHRFbmRzQWZ0ZXJUaW1lKHRoZXJlLCBgJHsyNC01fTowMGApLFxuICAgICAgICAgICAgWydFV1InLCAnTEdBJywgJ0pGSyddLmluY2x1ZGVzKGJhY2suc3RhcnQuZnJvbSkgJiYgIWZsaWdodFN0YXJ0c0FmdGVyVGltZShiYWNrLCBgJHs1KzV9OjAwYCksXG4gICAgICAgICAgICB0aW1lT25EYXRlKHRoZXJlLmVuZC50aW1lLCAnMjAxNy0xMS0yMycpICYmIGZsaWdodEVuZHNBZnRlclRpbWUodGhlcmUsIGAwJHsxMS00fTowMGApLFxuICAgICAgICAgICAgdGltZU9uRGF0ZShiYWNrLmVuZC50aW1lLCAnMjAxNy0xMS0yNycpICYmIGZsaWdodEVuZHNBZnRlclRpbWUoYmFjaywgYCR7MTMtMn06MzBgKSxcbiAgICAgICAgICAgIHRpbWVPbkRhdGUodGhlcmUuc3RhcnQudGltZSwgJzIwMTctMTEtMjMnKSAmJiB0aW1lT25EYXRlKHRoZXJlLmVuZC50aW1lLCAnMjAxNy0xMS0yNCcpLFxuICAgICAgICAgIF07XG4gICAgICAgICAgcmV0dXJuIChfLmV2ZXJ5KG11c3RzKSAmJiBfLnNvbWUob3B0aW9ucykgJiYgIV8uc29tZShtdXN0bm90cykpO1xuICAgICAgICB9KVxuICAgICAgICAuc29ydEJ5KCdlZmZlY3RpdmVXZWlnaHQubnVtYmVyJylcbiAgICAgICAgLnZhbHVlKCk7XG4gICAgICByZXNwb25zZS5yZW5kZXIoJ2ZsaWdodHMnLCB7IHNlYXJjaFJlc3VsdHMgfSk7XG4gICAgfSk7XG59KTtcblxudmFyIGxpc3RlbmVyID0gYXBwLmxpc3Rlbihwcm9jZXNzLmVudi5QT1JULCAoKSA9PiBjb25zb2xlLmxvZygnWW91ciBhcHAgaXMgbGlzdGVuaW5nIG9uIHBvcnQgJyArIGxpc3RlbmVyLmFkZHJlc3MoKS5wb3J0KSk7XG5cbi8vIGltcG9ydCBjYWxjdWxhdGUgZnJvbSAnLi9jYWxjdWxhdGUuanMnO1xuXG4vLyBpbXBvcnQgbW9tZW50IGZyb20gJ21vbWVudCc7XG5cbi8vIGltcG9ydCByZXF1ZXN0UHJvbWlzZSBmcm9tICdyZXF1ZXN0LXByb21pc2UtbmF0aXZlJztcbi8vIGltcG9ydCBxcyBmcm9tICdxdWVyeXN0cmluZyc7XG5cbi8vIGltcG9ydCBleHByZXNzIGZyb20gJ2V4cHJlc3MnO1xuLy8gaW1wb3J0IGV4cGhicyBmcm9tICdleHByZXNzLWhhbmRsZWJhcnMnO1xuXG5cbi8vIHZhciBhcHAgPSBleHByZXNzKCk7XG5cbi8vIGFwcC5lbmdpbmUoJy5oYnMnLCBleHBoYnMoe1xuLy8gICBleHRuYW1lOiAnLmhicycsXG4vLyAgIGRlZmF1bHRMYXlvdXQ6ICdtYWluJyxcbi8vICAgcGFydGlhbHNEaXI6ICd2aWV3cy9wYXJ0aWFscycsXG4vLyAgIGxheW91dHNEaXI6ICd2aWV3cy9sYXlvdXRzJ1xuLy8gfSkpO1xuLy8gYXBwLnNldCgndmlldyBlbmdpbmUnLCAnLmhicycpO1xuXG4vLyBhcHAudXNlKGV4cHJlc3Muc3RhdGljKCdwdWJsaWMnKSk7XG5cbi8vIGFwcC5nZXQoJy8nLCBmdW5jdGlvbiAocmVxdWVzdCwgcmVzcG9uc2UpIHtcbi8vICAgY29uc3QgcXVlcnlQYXJhbXMgPSB7XG4vLyAgICAgdHlwZUZsaWdodDogJ3JvdW5kJyxcbi8vICAgICBmbHlEYXlzVHlwZTogJ2RlcGFydHVyZScsXG4vLyAgICAgcmV0dXJuRmx5RGF5c1R5cGU6ICdhcnJpdmFsJyxcblxuLy8gICAgIGZseUZyb206ICczNy44LS0xMjIuMjctNzRrbScsXG4vLyAgICAgdG86ICc0MC43OS0tNzQuMjctMzI1a20nLFxuLy8gICAgIGRhdGVGcm9tOiAnMTcvMTEvMjAxNycsXG4vLyAgICAgZGF0ZVRvOiAnMjMvMTEvMjAxNycsXG4vLyAgICAgcmV0dXJuRnJvbTogJzIzLzExLzIwMTcnLFxuLy8gICAgIHJldHVyblRvOiAnMjcvMTEvMjAxNycsXG5cbi8vICAgICBwYXNzZW5nZXJzOiAxLFxuLy8gICAgIGFkdWx0czogMSxcbi8vICAgICBjaGlsZHJlbjogMCxcbi8vICAgICBpbmZhbnRzOiAwLFxuXG4vLyAgICAgcHJpY2VfZnJvbTogMCxcbi8vICAgICBwcmljZV90bzogMTEwMCxcblxuLy8gICAgIGN1cnI6ICdVU0QnLFxuLy8gICAgIGxvY2FsZTogJ2VuJyxcbi8vICAgICBpbm5lckxpbWl0OiAzMDAsXG4vLyAgICAgc29ydDogJ3F1YWxpdHknLFxuLy8gICB9O1xuLy8gICByZXR1cm4gcmVxdWVzdFByb21pc2UoYGh0dHBzOi8vYXBpLnNreXBpY2tlci5jb20vZmxpZ2h0cz8ke3FzLnN0cmluZ2lmeShxdWVyeVBhcmFtcyl9YClcbi8vICAgICAudGhlbigocmF3UmVzdWx0KSA9PiB7XG4vLyAgICAgICAvLyBsZXQge30gPSByZXF1ZXN0LnF1ZXJ5O1xuLy8gICAgICAgY29uc3QgcmVzdWx0ID0gSlNPTi5wYXJzZShyYXdSZXN1bHQpO1xuLy8gICAgICAgcmVzcG9uc2UucmVuZGVyKCdmbGlnaHRzJywge1xuLy8gICAgICAgICBpdGVtczogcmVzdWx0LmRhdGEubWFwKCh7XG4vLyAgICAgICAgICAgcHJpY2UsXG4vLyAgICAgICAgICAgcm91dGUsXG4vLyAgICAgICAgIH0pID0+IHtcbi8vICAgICAgICAgICBjb25zdCB0aW1lRm9ybWF0ID0gJ1lZWVktTU0tREQgaDptbTpzcyc7XG4vLyAgICAgICAgICAgY29uc3QgdGhlUm91dGUgPSByb3V0ZVxuLy8gICAgICAgICAgICAgICAubWFwKCh7IFxuLy8gICAgICAgICAgICAgICAgIGFpcmxpbmUsXG4vLyAgICAgICAgICAgICAgICAgZmxpZ2h0X25vLFxuLy8gICAgICAgICAgICAgICAgIGZseUZyb20sXG4vLyAgICAgICAgICAgICAgICAgZmx5VG8sXG4vLyAgICAgICAgICAgICAgICAgcmV0dXJuOiBpc1JldHVybixcblxuLy8gICAgICAgICAgICAgICAgIGRUaW1lOiBkZXBhcnR1cmVUaW1lLFxuLy8gICAgICAgICAgICAgICAgIGRUaW1lVVRDOiBkZXBhcnR1cmVUaW1lVVRDLFxuLy8gICAgICAgICAgICAgICAgIGFUaW1lOiBhcnJpdmFsVGltZSxcbi8vICAgICAgICAgICAgICAgICBhVGltZVVUQzogYXJyaXZhbFRpbWVVVEMsXG4vLyAgICAgICAgICAgICAgIH0pID0+IHtcbi8vICAgICAgICAgICAgICAgICByZXR1cm4ge1xuLy8gICAgICAgICAgICAgICAgICAgYWlybGluZSxcbi8vICAgICAgICAgICAgICAgICAgIGZsaWdodF9ubyxcbi8vICAgICAgICAgICAgICAgICAgIGZseUZyb20sXG4vLyAgICAgICAgICAgICAgICAgICBmbHlUbyxcbi8vICAgICAgICAgICAgICAgICAgIGRpcmVjdGlvbjogaXNSZXR1cm4gPyAnQmFjaycgOiAnVGhlcmUnLFxuXG4vLyAgICAgICAgICAgICAgICAgICBkZXBhcnR1cmVUaW1lOiBtb21lbnQoZGVwYXJ0dXJlVGltZSAqIDEwMDApLmZvcm1hdCh0aW1lRm9ybWF0KSxcbi8vICAgICAgICAgICAgICAgICAgIGRlcGFydHVyZVRpbWVVVEM6IG1vbWVudC51dGMoZGVwYXJ0dXJlVGltZVVUQyAqIDEwMDApLmZvcm1hdCh0aW1lRm9ybWF0KSxcbi8vICAgICAgICAgICAgICAgICAgIGFycml2YWxUaW1lOiBtb21lbnQoYXJyaXZhbFRpbWUgKiAxMDAwKS5mb3JtYXQodGltZUZvcm1hdCksXG4vLyAgICAgICAgICAgICAgICAgICBhcnJpdmFsVGltZVVUQzogbW9tZW50LnV0YyhhcnJpdmFsVGltZVVUQyAqIDEwMDApLmZvcm1hdCh0aW1lRm9ybWF0KSxcbi8vICAgICAgICAgICAgICAgICB9O1xuLy8gICAgICAgICAgICAgICB9KTtcbi8vICAgICAgICAgICBjb25zdCB0aGVyZSA9IHtcbi8vICAgICAgICAgICAgIGZsaWdodHM6IHRoZVJvdXRlLmZpbHRlcihmbGlnaHQgPT4gZmxpZ2h0LmRpcmVjdGlvbiA9PT0gJ0JhY2snKSxcbi8vICAgICAgICAgICAgIHN0YXJ0OiB7XG4vLyAgICAgICAgICAgICAgIHRpbWUsXG4vLyAgICAgICAgICAgICAgIGxvY2F0aW9uLFxuLy8gICAgICAgICAgICAgfSxcbi8vICAgICAgICAgICAgIGVuZDoge1xuLy8gICAgICAgICAgICAgICB0aW1lLFxuLy8gICAgICAgICAgICAgICBsb2NhdGlvbixcbi8vICAgICAgICAgICAgIH0sXG4vLyAgICAgICAgICAgICBsZW5ndGgsXG4vLyAgICAgICAgICAgICBsYXlvdmVydGltZSxcbi8vICAgICAgICAgICB9O1xuLy8gICAgICAgICAgIGNvbnN0IGJhY2sgPSB7XG4vLyAgICAgICAgICAgICBmbGlnaHRzOiB0aGVSb3V0ZS5maWx0ZXIoZmxpZ2h0ID0+IGZsaWdodC5kaXJlY3Rpb24gPT09ICdUaGVyZScpLFxuLy8gICAgICAgICAgICAgc3RhcnQ6IHtcbi8vICAgICAgICAgICAgICAgdGltZSxcbi8vICAgICAgICAgICAgICAgbG9jYXRpb24sXG4vLyAgICAgICAgICAgICB9LFxuLy8gICAgICAgICAgICAgZW5kOiB7XG4vLyAgICAgICAgICAgICAgIHRpbWUsXG4vLyAgICAgICAgICAgICAgIGxvY2F0aW9uLFxuLy8gICAgICAgICAgICAgfSxcbi8vICAgICAgICAgICAgIGxlbmd0aCxcbi8vICAgICAgICAgICAgIGxheW92ZXJ0aW1lLFxuLy8gICAgICAgICAgIH07XG4vLyAgICAgICAgICAgcmV0dXJuIHtcbi8vICAgICAgICAgICAgIHByaWNlLFxuICAgICAgICAgICAgXG4vLyAgICAgICAgICAgICB0aGVyZSxcbi8vICAgICAgICAgICAgIGJhY2ssXG4vLyAgICAgICAgICAgfTtcbi8vICAgICAgICAgfSlcbi8vICAgICAgIH0pO1xuLy8gICAgIH0pXG4vLyB9KTtcblxuLy8gdmFyIGxpc3RlbmVyID0gYXBwLmxpc3Rlbihwcm9jZXNzLmVudi5QT1JULCAoKSA9PiBjb25zb2xlLmxvZygnWW91ciBhcHAgaXMgbGlzdGVuaW5nIG9uIHBvcnQgJyArIGxpc3RlbmVyLmFkZHJlc3MoKS5wb3J0KSk7Il19",
+    "ast": null,
+    "map": {
+      "version": 3,
+      "sources": [
+        "app.js"
+      ],
+      "names": [
+        "moment",
+        "require",
+        "_",
+        "requestPromise",
+        "qs",
+        "searchResultViewmodel",
+        "flightStartsAfterTime",
+        "flightEndsAfterTime",
+        "flightStartsAndEndsWithinHoursOnSameDay",
+        "flightStartsOnDays",
+        "timeOnDate",
+        "queryParams",
+        "typeFlight",
+        "flyFrom",
+        "join",
+        "to",
+        "dateFrom",
+        "dateTo",
+        "returnFrom",
+        "returnTo",
+        "passengers",
+        "adults",
+        "children",
+        "infants",
+        "price_from",
+        "price_to",
+        "curr",
+        "locale",
+        "innerLimit",
+        "limit",
+        "sort",
+        "getResults",
+        "uriGenerator",
+        "resultsSoFar",
+        "then",
+        "JSON",
+        "parse",
+        "rawResponse",
+        "concat",
+        "response",
+        "data",
+        "console",
+        "log",
+        "length",
+        "_results",
+        "_next",
+        "makeUrlWithOffset",
+        "queryString",
+        "stringify",
+        "Object",
+        "assign",
+        "offset",
+        "offsetUrlGenerator",
+        "returnUrl",
+        "resultsPromise",
+        "Promise",
+        "resolve",
+        "reject",
+        "app",
+        "engine",
+        "extname",
+        "defaultLayout",
+        "partialsDir",
+        "layoutsDir",
+        "set",
+        "use",
+        "static",
+        "get",
+        "request",
+        "searchResults",
+        "results",
+        "map",
+        "filter",
+        "there",
+        "back",
+        "musts",
+        "start",
+        "time",
+        "options",
+        "mustnots",
+        "includes",
+        "end",
+        "from",
+        "every",
+        "some",
+        "sortBy",
+        "value",
+        "render",
+        "listener",
+        "listen",
+        "process",
+        "env",
+        "PORT",
+        "address",
+        "port"
+      ],
+      "mappings": "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AF,CAAOL,QAAP,CAA9C;AACD,KArCmB,EAsCnBM,MAtCmB,CAsCZ,wBAtCY,EAuCnBC,KAvCmB,EAAtB;AAwCA/C,aAASgD,MAAT,CAAgB,SAAhB,EAA2B,EAAElB,4BAAF,EAA3B;AACD,GA3CI,CAAP;AA4CD,CAtED;;AAwEA,IAAImB,WAAW9B,IAAI+B,MAAJ,CAAWC,QAAQC,GAAR,CAAYC,IAAvB,EAA6B;AAAA,SAAMnD,QAAQC,GAAR,CAAY,mCAAmC8C,SAASK,OAAT,GAAmBC,IAAlE,CAAN;AAAA,CAA7B,CAAf;;AAEA;;AAEA;;AAEA;AACA;;AAEA;AACA;;;AAGA;;AAEA;AACA;AACA;AACA;AACA;AACA;AACA;;AAEA;;AAEA;AACA;AACA;AACA;AACA;;AAEA;AACA;AACA;AACA;AACA;AACA;;AAEA;AACA;AACA;AACA;;AAEA;AACA;;AAEA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;;AAEA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;;AAEA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;;AAEA;AACA;AACA;AACA;AACA;AACA;AACA;;AAEA",
+      "file": "app.js",
+      "sourceRoot": "/app",
+      "sourcesContent": [
+        "const moment = require('moment');\nconst _ = require('lodash');\nconst requestPromise = require('request-promise-native');\nconst qs = require('querystring');\n\nimport express from 'express';\nimport exphbs from 'express-handlebars';\n\nconst {\n  searchResultViewmodel,\n\n  flightStartsAfterTime,\n  flightEndsAfterTime,\n  flightStartsAndEndsWithinHoursOnSameDay,\n  flightStartsOnDays,\n  timeOnDate,\n} = require('./view-models-and-helpers.js');\n\nconst queryParams = {\n  typeFlight: 'round',\n  // flyDaysType: 'departure',\n  // returnFlyDaysType: 'arrival',\n\n  flyFrom: [\n    'SFO',\n    'OAK',\n    'SJC',\n  ].join(','),\n  to: [\n    'BDL',\n    'HVN',\n\n    // 'BWI',\n    // 'DCA',\n    // 'IAD',\n\n    'EWR',\n    'JFK',\n    'LGA',\n\n    'PHL',\n\n    'ABE',\n    'ACY',\n    'ALB',\n    'AOO',\n    'AVP',\n    'BGM',\n    'ELM',\n    'HGR',\n    'HPN',\n    'IPT',\n    'ISP',\n    'ITH',\n    'LNS',\n    'MDT',\n    'MMU',\n    'PVD',\n    'SBY',\n    'SCE',\n    'SWF',\n    'TTN'\n    //'BDL,BWI,DCA,EWR,HVN,IAD,JFK,LGA,PHL,BOS',//'40.22--74.74-325km',//'40.79--74.27-325km',//https://www.mapdevelopers.com/draw-circle-tool.php\n  ].join(','),\n  dateFrom: '17/11/2017',\n  dateTo: '23/11/2017',\n  returnFrom: '24/11/2017',//'23/11/2017',\n  returnTo: '27/11/2017',\n\n  // 'flyDays[]': '5',\n  // flyDaysType: 'departure',\n\n  // selectedStopoverAirports: 'IAD,DCA,BWI',\n  // selectedStopoverAirportsExclude: false,\n\n  passengers: 1,\n  adults: 1,\n  children: 0,\n  infants: 0,\n\n  price_from: 0,\n  price_to: 1100,\n\n  curr: 'USD',\n  locale: 'en',\n  innerLimit: 300,\n  limit: 200,\n  sort: 'quality',\n};\n\nconst getResults = (uriGenerator, resultsSoFar = []) => {\n  return requestPromise(uriGenerator())\n    .then(rawResponse => {\n      return JSON.parse(rawResponse);\n    })\n    .then(response => {\n      resultsSoFar = resultsSoFar.concat(response.data);\n      console.log(resultsSoFar.length + ' results so far of ' + response._results);\n      if (response._next) {\n        return getResults(uriGenerator, resultsSoFar);\n      }\n      return resultsSoFar;\n    });\n}\n\nconst makeUrlWithOffset = offset => {\n  const queryString = qs.stringify(Object.assign({ offset }, queryParams));\n  return `https://api.skypicker.com/flights?${queryString}`;\n};\n\nconst offsetUrlGenerator = () => {\n  let offset = 0;\n  return () => {\n    const returnUrl = makeUrlWithOffset(offset);\n    offset += 200;\n    return returnUrl;\n  }\n};\n\nconst resultsPromise = new Promise((resolve, reject) => {\n  const uriGenerator = offsetUrlGenerator();\n  resolve(\n    getResults(uriGenerator)\n  );\n});\n\nvar app = express();\n\napp.engine('.hbs', exphbs({\n  extname: '.hbs',\n  defaultLayout: 'main',\n  partialsDir: 'views/partials',\n  layoutsDir: 'views/layouts'\n}));\napp.set('view engine', '.hbs');\n\napp.use(express.static('public'));\n\napp.get('/', function (request, response) {\n//   const queryParams = {\n//     typeFlight: 'round',\n//     flyDaysType: 'departure',\n//     returnFlyDaysType: 'arrival',\n\n//     flyFrom: '37.8--122.27-74km',\n//     to: '40.79--74.27-325km',\n//     dateFrom: '17/11/2017',\n//     dateTo: '23/11/2017',\n//     returnFrom: '23/11/2017',\n//     returnTo: '27/11/2017',\n\n//     passengers: 1,\n//     adults: 1,\n//     children: 0,\n//     infants: 0,\n\n//     price_from: 0,\n//     price_to: 1100,\n\n//     curr: 'USD',\n//     locale: 'en',\n//     innerLimit: 300,\n//     sort: 'quality',\n//   };\n  return resultsPromise\n    .then(results => {\n      const searchResults = _(results)\n        .map(searchResultViewmodel)\n        .filter(({ there, back }) => {\n          const musts = [\n            flightStartsAndEndsWithinHoursOnSameDay(there, '05:00', '24:00') &&\n              flightStartsAndEndsWithinHoursOnSameDay(back, '05:00', '24:00'),\n            (timeOnDate(back.start.time, '2017-11-24') && flightStartsAfterTime(back, `${13+4}:00`)) || \n              !timeOnDate(back.start.time, '2017-11-24')\n          ];\n          const options = [\n            // (\n            //   flightStartsAndEndsWithinHoursOnSameDay(there, '05:00', '24:00') &&\n            //   flightStartsAndEndsWithinHoursOnSameDay(back, '05:00', '24:00')\n            // ),\n            // (\n            //   flightStartsOnDays(there, ['Friday']) && flightStartsAfterTime(there, '15:30')\n            // ),\n            // (\n            //   flightStartsOnDays(back, ['Sunday']) && flightStartsAfterTime(there, '05:00')\n            // ),\n            // (\n            //   flightStartsOnDays(back, ['Saturday']) && flightStartsAfterTime(there, '13:00')\n            // ),\n            // flightStartsOnDays(there, ['Friday', 'Saturday', 'Sunday']) && flightStartsAfterTime(there, '13:00'),\n            // flightStartsOnDays(there, ['Wednesday', 'Saturday', 'Sunday']) //&&\n              // flightStartsAndEndsWithinHoursOnSameDay(there, '05:00', '24:00') &&\n              // flightStartsAndEndsWithinHoursOnSameDay(back, '05:00', '24:00')\n            true\n          ];\n          const mustnots = [\n            ['EWR', 'LGA', 'JFK'].includes(there.end.to) && flightEndsAfterTime(there, `${24-5}:00`),\n            ['EWR', 'LGA', 'JFK'].includes(back.start.from) && !flightStartsAfterTime(back, `${5+5}:00`),\n            timeOnDate(there.end.time, '2017-11-23') && flightEndsAfterTime(there, `0${11-4}:00`),\n            timeOnDate(back.end.time, '2017-11-27') && flightEndsAfterTime(back, `${13-2}:30`),\n            timeOnDate(there.start.time, '2017-11-23') && timeOnDate(there.end.time, '2017-11-24'),\n          ];\n          return (_.every(musts) && _.some(options) && !_.some(mustnots));\n        })\n        .sortBy('effectiveWeight.number')\n        .value();\n      response.render('flights', { searchResults });\n    });\n});\n\nvar listener = app.listen(process.env.PORT, () => console.log('Your app is listening on port ' + listener.address().port));\n\n// import calculate from './calculate.js';\n\n// import moment from 'moment';\n\n// import requestPromise from 'request-promise-native';\n// import qs from 'querystring';\n\n// import express from 'express';\n// import exphbs from 'express-handlebars';\n\n\n// var app = express();\n\n// app.engine('.hbs', exphbs({\n//   extname: '.hbs',\n//   defaultLayout: 'main',\n//   partialsDir: 'views/partials',\n//   layoutsDir: 'views/layouts'\n// }));\n// app.set('view engine', '.hbs');\n\n// app.use(express.static('public'));\n\n// app.get('/', function (request, response) {\n//   const queryParams = {\n//     typeFlight: 'round',\n//     flyDaysType: 'departure',\n//     returnFlyDaysType: 'arrival',\n\n//     flyFrom: '37.8--122.27-74km',\n//     to: '40.79--74.27-325km',\n//     dateFrom: '17/11/2017',\n//     dateTo: '23/11/2017',\n//     returnFrom: '23/11/2017',\n//     returnTo: '27/11/2017',\n\n//     passengers: 1,\n//     adults: 1,\n//     children: 0,\n//     infants: 0,\n\n//     price_from: 0,\n//     price_to: 1100,\n\n//     curr: 'USD',\n//     locale: 'en',\n//     innerLimit: 300,\n//     sort: 'quality',\n//   };\n//   return requestPromise(`https://api.skypicker.com/flights?${qs.stringify(queryParams)}`)\n//     .then((rawResult) => {\n//       // let {} = request.query;\n//       const result = JSON.parse(rawResult);\n//       response.render('flights', {\n//         items: result.data.map(({\n//           price,\n//           route,\n//         }) => {\n//           const timeFormat = 'YYYY-MM-DD h:mm:ss';\n//           const theRoute = route\n//               .map(({ \n//                 airline,\n//                 flight_no,\n//                 flyFrom,\n//                 flyTo,\n//                 return: isReturn,\n\n//                 dTime: departureTime,\n//                 dTimeUTC: departureTimeUTC,\n//                 aTime: arrivalTime,\n//                 aTimeUTC: arrivalTimeUTC,\n//               }) => {\n//                 return {\n//                   airline,\n//                   flight_no,\n//                   flyFrom,\n//                   flyTo,\n//                   direction: isReturn ? 'Back' : 'There',\n\n//                   departureTime: moment(departureTime * 1000).format(timeFormat),\n//                   departureTimeUTC: moment.utc(departureTimeUTC * 1000).format(timeFormat),\n//                   arrivalTime: moment(arrivalTime * 1000).format(timeFormat),\n//                   arrivalTimeUTC: moment.utc(arrivalTimeUTC * 1000).format(timeFormat),\n//                 };\n//               });\n//           const there = {\n//             flights: theRoute.filter(flight => flight.direction === 'Back'),\n//             start: {\n//               time,\n//               location,\n//             },\n//             end: {\n//               time,\n//               location,\n//             },\n//             length,\n//             layovertime,\n//           };\n//           const back = {\n//             flights: theRoute.filter(flight => flight.direction === 'There'),\n//             start: {\n//               time,\n//               location,\n//             },\n//             end: {\n//               time,\n//               location,\n//             },\n//             length,\n//             layovertime,\n//           };\n//           return {\n//             price,\n            \n//             there,\n//             back,\n//           };\n//         })\n//       });\n//     })\n// });\n\n// var listener = app.listen(process.env.PORT, () => console.log('Your app is listening on port ' + listener.address().port));"
+      ]
+    },
+    "mtime": 1507749048675
+  },
+  "{\"filename\":\"/app/calculate.js\",\"env\":{},\"retainLines\":false,\"highlightCode\":true,\"suppressDeprecationMessages\":false,\"presets\":[],\"plugins\":[[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],{\"loose\":false,\"spec\":false}],[[],null],[[],null],[[],{\"spec\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"async\":false,\"asyncGenerators\":false}]],\"ignore\":[],\"code\":true,\"metadata\":true,\"ast\":true,\"comments\":true,\"compact\":\"auto\",\"minified\":false,\"sourceRoot\":\"/app\",\"babelrc\":true,\"sourceType\":\"module\",\"moduleIds\":false,\"passPerPreset\":false,\"parserOpts\":false,\"generatorOpts\":false}:6.24.1": {
+    "metadata": {
+      "usedHelpers": [
+        "interopRequireDefault"
+      ],
+      "marked": [],
+      "modules": {
+        "imports": [
+          {
+            "source": "moment",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "moment"
+              }
+            ]
+          },
+          {
+            "source": "lodash",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "_"
+              }
+            ]
+          }
+        ],
+        "exports": {
+          "exported": [
+            "calculate",
+            "startingBalance",
+            "dueDateDayOfTheMonth",
+            "zeroInterestEnd",
+            "startDate"
+          ],
+          "specifiers": [
+            {
+              "kind": "local",
+              "local": "calculate",
+              "exported": "default"
+            },
+            {
+              "kind": "local",
+              "local": "startingBalance",
+              "exported": "default"
+            },
+            {
+              "kind": "local",
+              "local": "dueDateDayOfTheMonth",
+              "exported": "default"
+            },
+            {
+              "kind": "local",
+              "local": "zeroInterestEnd",
+              "exported": "default"
+            },
+            {
+              "kind": "local",
+              "local": "startDate",
+              "exported": "default"
+            }
+          ]
+        }
+      }
+    },
+    "options": {
+      "filename": "/app/calculate.js",
+      "filenameRelative": "/app/calculate.js",
+      "env": {},
+      "retainLines": false,
+      "highlightCode": true,
+      "suppressDeprecationMessages": false,
+      "presets": [],
+      "plugins": [
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false,
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "async": false,
+            "asyncGenerators": false
+          }
+        ]
+      ],
+      "ignore": [],
+      "code": true,
+      "metadata": true,
+      "ast": false,
+      "comments": true,
+      "compact": "auto",
+      "minified": false,
+      "sourceMaps": "both",
+      "sourceMapTarget": "calculate.js",
+      "sourceFileName": "calculate.js",
+      "sourceRoot": "/app",
+      "babelrc": false,
+      "sourceType": "module",
+      "moduleRoot": "/app",
+      "moduleIds": false,
+      "passPerPreset": false,
+      "parserOpts": false,
+      "generatorOpts": false,
+      "basename": "calculate"
+    },
+    "ignored": false,
+    "code": "'use strict';\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = calculate;\n\nvar _moment = require('moment');\n\nvar _moment2 = _interopRequireDefault(_moment);\n\nvar _lodash = require('lodash');\n\nvar _lodash2 = _interopRequireDefault(_lodash);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction calculate(_ref) {\n  var startingBalance = _ref.startingBalance,\n      _ref$startDate = _ref.startDate,\n      startDate = _ref$startDate === undefined ? (0, _moment2.default)() : _ref$startDate,\n      dueDateDayOfTheMonth = _ref.dueDateDayOfTheMonth,\n      zeroInterestEnd = _ref.zeroInterestEnd;\n\n  var currentDate = startDate;\n  var currentBalance = startingBalance;\n\n  var moneyDisplay = function moneyDisplay(num) {\n    return '$' + num.toFixed(2);\n  };\n\n  var nextDueDate = function nextDueDate(date) {\n    var currentDayOfMonth = date.date();\n    var returnDate = (0, _moment2.default)(date);\n    if (currentDayOfMonth >= dueDateDayOfTheMonth) {\n      returnDate.month(date.month() + 1);\n    }\n    return returnDate.date(dueDateDayOfTheMonth);\n  };\n\n  var getPaymentsLeft = function getPaymentsLeft(date) {\n    var pointer = (0, _moment2.default)(date);\n    var count = 0;\n    while (pointer.isSameOrBefore(zeroInterestEnd)) {\n      pointer = nextDueDate(pointer);\n      count++;\n    }\n    return count;\n  };\n\n  var returnArray = [];\n\n  while (currentBalance > 0 && currentDate.isBefore(zeroInterestEnd)) {\n    var item = {};\n\n    currentDate = nextDueDate(currentDate);\n    item.date = currentDate;\n    item.dateString = currentDate.format('MMMM Do, Y');\n\n    var paymentsLeft = getPaymentsLeft(currentDate);\n    item.paymentsLeft = paymentsLeft;\n\n    var monthlyMinimumPayment = Math.max(Math.floor(currentBalance / 100), 25);\n    var payment = monthlyMinimumPayment + Math.ceil(currentBalance / paymentsLeft);\n    item.payment = '-' + moneyDisplay(payment);\n\n    currentBalance -= payment;\n    item.balance = moneyDisplay(currentBalance);\n\n    returnArray.push(item);\n  }\n  return returnArray;\n};\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNhbGN1bGF0ZS5qcyJdLCJuYW1lcyI6WyJjYWxjdWxhdGUiLCJzdGFydGluZ0JhbGFuY2UiLCJzdGFydERhdGUiLCJkdWVEYXRlRGF5T2ZUaGVNb250aCIsInplcm9JbnRlcmVzdEVuZCIsImN1cnJlbnREYXRlIiwiY3VycmVudEJhbGFuY2UiLCJtb25leURpc3BsYXkiLCJudW0iLCJ0b0ZpeGVkIiwibmV4dER1ZURhdGUiLCJjdXJyZW50RGF5T2ZNb250aCIsImRhdGUiLCJyZXR1cm5EYXRlIiwibW9udGgiLCJnZXRQYXltZW50c0xlZnQiLCJwb2ludGVyIiwiY291bnQiLCJpc1NhbWVPckJlZm9yZSIsInJldHVybkFycmF5IiwiaXNCZWZvcmUiLCJpdGVtIiwiZGF0ZVN0cmluZyIsImZvcm1hdCIsInBheW1lbnRzTGVmdCIsIm1vbnRobHlNaW5pbXVtUGF5bWVudCIsIk1hdGgiLCJtYXgiLCJmbG9vciIsInBheW1lbnQiLCJjZWlsIiwiYmFsYW5jZSIsInB1c2giXSwibWFwcGluZ3MiOiI7Ozs7O2tCQUd3QkEsUzs7QUFIeEI7Ozs7QUFDQTs7Ozs7O0FBRWUsU0FBU0EsU0FBVCxPQUtaO0FBQUEsTUFKREMsZUFJQyxRQUpEQSxlQUlDO0FBQUEsNEJBSERDLFNBR0M7QUFBQSxNQUhEQSxTQUdDLGtDQUhXLHVCQUdYO0FBQUEsTUFGREMsb0JBRUMsUUFGREEsb0JBRUM7QUFBQSxNQUREQyxlQUNDLFFBRERBLGVBQ0M7O0FBQ0QsTUFBSUMsY0FBY0gsU0FBbEI7QUFDQSxNQUFJSSxpQkFBaUJMLGVBQXJCOztBQUVBLE1BQU1NLGVBQWUsU0FBZkEsWUFBZTtBQUFBLGlCQUFXQyxJQUFJQyxPQUFKLENBQVksQ0FBWixDQUFYO0FBQUEsR0FBckI7O0FBRUEsTUFBTUMsY0FBYyxTQUFkQSxXQUFjLE9BQVE7QUFDMUIsUUFBTUMsb0JBQW9CQyxLQUFLQSxJQUFMLEVBQTFCO0FBQ0EsUUFBSUMsYUFBYSxzQkFBT0QsSUFBUCxDQUFqQjtBQUNBLFFBQUdELHFCQUFxQlIsb0JBQXhCLEVBQThDO0FBQzVDVSxpQkFBV0MsS0FBWCxDQUFpQkYsS0FBS0UsS0FBTCxLQUFhLENBQTlCO0FBQ0Q7QUFDRCxXQUFPRCxXQUFXRCxJQUFYLENBQWdCVCxvQkFBaEIsQ0FBUDtBQUNELEdBUEQ7O0FBU0EsTUFBTVksa0JBQWtCLFNBQWxCQSxlQUFrQixPQUFRO0FBQzlCLFFBQUlDLFVBQVUsc0JBQU9KLElBQVAsQ0FBZDtBQUNBLFFBQUlLLFFBQVEsQ0FBWjtBQUNBLFdBQU1ELFFBQVFFLGNBQVIsQ0FBdUJkLGVBQXZCLENBQU4sRUFBK0M7QUFDN0NZLGdCQUFVTixZQUFZTSxPQUFaLENBQVY7QUFDQUM7QUFDRDtBQUNELFdBQU9BLEtBQVA7QUFDRCxHQVJEOztBQVVBLE1BQUlFLGNBQWMsRUFBbEI7O0FBRUEsU0FBTWIsaUJBQWlCLENBQWpCLElBQXNCRCxZQUFZZSxRQUFaLENBQXFCaEIsZUFBckIsQ0FBNUIsRUFBbUU7QUFDakUsUUFBSWlCLE9BQU8sRUFBWDs7QUFFQWhCLGtCQUFjSyxZQUFZTCxXQUFaLENBQWQ7QUFDQWdCLFNBQUtULElBQUwsR0FBWVAsV0FBWjtBQUNBZ0IsU0FBS0MsVUFBTCxHQUFrQmpCLFlBQVlrQixNQUFaLENBQW1CLFlBQW5CLENBQWxCOztBQUVBLFFBQUlDLGVBQWVULGdCQUFnQlYsV0FBaEIsQ0FBbkI7QUFDQWdCLFNBQUtHLFlBQUwsR0FBb0JBLFlBQXBCOztBQUVBLFFBQU1DLHdCQUF3QkMsS0FBS0MsR0FBTCxDQUFTRCxLQUFLRSxLQUFMLENBQVd0QixpQkFBZSxHQUExQixDQUFULEVBQXlDLEVBQXpDLENBQTlCO0FBQ0EsUUFBSXVCLFVBQVVKLHdCQUF3QkMsS0FBS0ksSUFBTCxDQUFVeEIsaUJBQWVrQixZQUF6QixDQUF0QztBQUNBSCxTQUFLUSxPQUFMLFNBQW1CdEIsYUFBYXNCLE9BQWIsQ0FBbkI7O0FBRUF2QixzQkFBa0J1QixPQUFsQjtBQUNEUixTQUFLVSxPQUFMLEdBQWV4QixhQUFhRCxjQUFiLENBQWY7O0FBRUNhLGdCQUFZYSxJQUFaLENBQWlCWCxJQUFqQjtBQUNEO0FBQ0QsU0FBT0YsV0FBUDtBQUNEIiwiZmlsZSI6ImNhbGN1bGF0ZS5qcyIsInNvdXJjZVJvb3QiOiIvYXBwIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IG1vbWVudCBmcm9tICdtb21lbnQnO1xuaW1wb3J0IF8gZnJvbSAnbG9kYXNoJztcblxuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gY2FsY3VsYXRlKHtcbiAgc3RhcnRpbmdCYWxhbmNlLFxuICBzdGFydERhdGUgPSBtb21lbnQoKSxcbiAgZHVlRGF0ZURheU9mVGhlTW9udGgsXG4gIHplcm9JbnRlcmVzdEVuZFxufSkge1xuICBsZXQgY3VycmVudERhdGUgPSBzdGFydERhdGU7XG4gIGxldCBjdXJyZW50QmFsYW5jZSA9IHN0YXJ0aW5nQmFsYW5jZTtcblxuICBjb25zdCBtb25leURpc3BsYXkgPSBudW0gPT4gYCQke251bS50b0ZpeGVkKDIpfWA7XG5cbiAgY29uc3QgbmV4dER1ZURhdGUgPSBkYXRlID0+IHtcbiAgICBjb25zdCBjdXJyZW50RGF5T2ZNb250aCA9IGRhdGUuZGF0ZSgpO1xuICAgIGxldCByZXR1cm5EYXRlID0gbW9tZW50KGRhdGUpO1xuICAgIGlmKGN1cnJlbnREYXlPZk1vbnRoID49IGR1ZURhdGVEYXlPZlRoZU1vbnRoKSB7XG4gICAgICByZXR1cm5EYXRlLm1vbnRoKGRhdGUubW9udGgoKSsxKTtcbiAgICB9XG4gICAgcmV0dXJuIHJldHVybkRhdGUuZGF0ZShkdWVEYXRlRGF5T2ZUaGVNb250aCk7XG4gIH1cblxuICBjb25zdCBnZXRQYXltZW50c0xlZnQgPSBkYXRlID0+IHtcbiAgICBsZXQgcG9pbnRlciA9IG1vbWVudChkYXRlKTtcbiAgICBsZXQgY291bnQgPSAwO1xuICAgIHdoaWxlKHBvaW50ZXIuaXNTYW1lT3JCZWZvcmUoemVyb0ludGVyZXN0RW5kKSkge1xuICAgICAgcG9pbnRlciA9IG5leHREdWVEYXRlKHBvaW50ZXIpO1xuICAgICAgY291bnQrKztcbiAgICB9XG4gICAgcmV0dXJuIGNvdW50O1xuICB9XG5cbiAgbGV0IHJldHVybkFycmF5ID0gW107XG4gIFxuICB3aGlsZShjdXJyZW50QmFsYW5jZSA+IDAgJiYgY3VycmVudERhdGUuaXNCZWZvcmUoemVyb0ludGVyZXN0RW5kKSkge1xuICAgIGxldCBpdGVtID0ge307XG5cbiAgICBjdXJyZW50RGF0ZSA9IG5leHREdWVEYXRlKGN1cnJlbnREYXRlKTtcbiAgICBpdGVtLmRhdGUgPSBjdXJyZW50RGF0ZTtcbiAgICBpdGVtLmRhdGVTdHJpbmcgPSBjdXJyZW50RGF0ZS5mb3JtYXQoJ01NTU0gRG8sIFknKTtcbiAgICBcbiAgICBsZXQgcGF5bWVudHNMZWZ0ID0gZ2V0UGF5bWVudHNMZWZ0KGN1cnJlbnREYXRlKTtcbiAgICBpdGVtLnBheW1lbnRzTGVmdCA9IHBheW1lbnRzTGVmdDtcbiAgICBcbiAgICBjb25zdCBtb250aGx5TWluaW11bVBheW1lbnQgPSBNYXRoLm1heChNYXRoLmZsb29yKGN1cnJlbnRCYWxhbmNlLzEwMCksIDI1KTtcbiAgICBsZXQgcGF5bWVudCA9IG1vbnRobHlNaW5pbXVtUGF5bWVudCArIE1hdGguY2VpbChjdXJyZW50QmFsYW5jZS9wYXltZW50c0xlZnQpO1xuICAgIGl0ZW0ucGF5bWVudCA9IGAtJHttb25leURpc3BsYXkocGF5bWVudCl9YDtcbiAgICBcbiAgICBjdXJyZW50QmFsYW5jZSAtPSBwYXltZW50O1xuXHQgIGl0ZW0uYmFsYW5jZSA9IG1vbmV5RGlzcGxheShjdXJyZW50QmFsYW5jZSk7XG4gICAgXG4gICAgcmV0dXJuQXJyYXkucHVzaChpdGVtKTtcbiAgfVxuICByZXR1cm4gcmV0dXJuQXJyYXk7XG59OyJdfQ==",
+    "ast": null,
+    "map": {
+      "version": 3,
+      "sources": [
+        "calculate.js"
+      ],
+      "names": [
+        "calculate",
+        "startingBalance",
+        "startDate",
+        "dueDateDayOfTheMonth",
+        "zeroInterestEnd",
+        "currentDate",
+        "currentBalance",
+        "moneyDisplay",
+        "num",
+        "toFixed",
+        "nextDueDate",
+        "currentDayOfMonth",
+        "date",
+        "returnDate",
+        "month",
+        "getPaymentsLeft",
+        "pointer",
+        "count",
+        "isSameOrBefore",
+        "returnArray",
+        "isBefore",
+        "item",
+        "dateString",
+        "format",
+        "paymentsLeft",
+        "monthlyMinimumPayment",
+        "Math",
+        "max",
+        "floor",
+        "payment",
+        "ceil",
+        "balance",
+        "push"
+      ],
+      "mappings": ";;;;;kBAGwBA,S;;AAHxB;;;;AACA;;;;;;AAEe,SAASA,SAAT,OAKZ;AAAA,MAJDC,eAIC,QAJDA,eAIC;AAAA,4BAHDC,SAGC;AAAA,MAHDA,SAGC,kCAHW,uBAGX;AAAA,MAFDC,oBAEC,QAFDA,oBAEC;AAAA,MADDC,eACC,QADDA,eACC;;AACD,MAAIC,cAAcH,SAAlB;AACA,MAAII,iBAAiBL,eAArB;;AAEA,MAAMM,eAAe,SAAfA,YAAe;AAAA,iBAAWC,IAAIC,OAAJ,CAAY,CAAZ,CAAX;AAAA,GAArB;;AAEA,MAAMC,cAAc,SAAdA,WAAc,OAAQ;AAC1B,QAAMC,oBAAoBC,KAAKA,IAAL,EAA1B;AACA,QAAIC,aAAa,sBAAOD,IAAP,CAAjB;AACA,QAAGD,qBAAqBR,oBAAxB,EAA8C;AAC5CU,iBAAWC,KAAX,CAAiBF,KAAKE,KAAL,KAAa,CAA9B;AACD;AACD,WAAOD,WAAWD,IAAX,CAAgBT,oBAAhB,CAAP;AACD,GAPD;;AASA,MAAMY,kBAAkB,SAAlBA,eAAkB,OAAQ;AAC9B,QAAIC,UAAU,sBAAOJ,IAAP,CAAd;AACA,QAAIK,QAAQ,CAAZ;AACA,WAAMD,QAAQE,cAAR,CAAuBd,eAAvB,CAAN,EAA+C;AAC7CY,gBAAUN,YAAYM,OAAZ,CAAV;AACAC;AACD;AACD,WAAOA,KAAP;AACD,GARD;;AAUA,MAAIE,cAAc,EAAlB;;AAEA,SAAMb,iBAAiB,CAAjB,IAAsBD,YAAYe,QAAZ,CAAqBhB,eAArB,CAA5B,EAAmE;AACjE,QAAIiB,OAAO,EAAX;;AAEAhB,kBAAcK,YAAYL,WAAZ,CAAd;AACAgB,SAAKT,IAAL,GAAYP,WAAZ;AACAgB,SAAKC,UAAL,GAAkBjB,YAAYkB,MAAZ,CAAmB,YAAnB,CAAlB;;AAEA,QAAIC,eAAeT,gBAAgBV,WAAhB,CAAnB;AACAgB,SAAKG,YAAL,GAAoBA,YAApB;;AAEA,QAAMC,wBAAwBC,KAAKC,GAAL,CAASD,KAAKE,KAAL,CAAWtB,iBAAe,GAA1B,CAAT,EAAyC,EAAzC,CAA9B;AACA,QAAIuB,UAAUJ,wBAAwBC,KAAKI,IAAL,CAAUxB,iBAAekB,YAAzB,CAAtC;AACAH,SAAKQ,OAAL,SAAmBtB,aAAasB,OAAb,CAAnB;;AAEAvB,sBAAkBuB,OAAlB;AACDR,SAAKU,OAAL,GAAexB,aAAaD,cAAb,CAAf;;AAECa,gBAAYa,IAAZ,CAAiBX,IAAjB;AACD;AACD,SAAOF,WAAP;AACD",
+      "file": "calculate.js",
+      "sourceRoot": "/app",
+      "sourcesContent": [
+        "import moment from 'moment';\nimport _ from 'lodash';\n\nexport default function calculate({\n  startingBalance,\n  startDate = moment(),\n  dueDateDayOfTheMonth,\n  zeroInterestEnd\n}) {\n  let currentDate = startDate;\n  let currentBalance = startingBalance;\n\n  const moneyDisplay = num => `$${num.toFixed(2)}`;\n\n  const nextDueDate = date => {\n    const currentDayOfMonth = date.date();\n    let returnDate = moment(date);\n    if(currentDayOfMonth >= dueDateDayOfTheMonth) {\n      returnDate.month(date.month()+1);\n    }\n    return returnDate.date(dueDateDayOfTheMonth);\n  }\n\n  const getPaymentsLeft = date => {\n    let pointer = moment(date);\n    let count = 0;\n    while(pointer.isSameOrBefore(zeroInterestEnd)) {\n      pointer = nextDueDate(pointer);\n      count++;\n    }\n    return count;\n  }\n\n  let returnArray = [];\n  \n  while(currentBalance > 0 && currentDate.isBefore(zeroInterestEnd)) {\n    let item = {};\n\n    currentDate = nextDueDate(currentDate);\n    item.date = currentDate;\n    item.dateString = currentDate.format('MMMM Do, Y');\n    \n    let paymentsLeft = getPaymentsLeft(currentDate);\n    item.paymentsLeft = paymentsLeft;\n    \n    const monthlyMinimumPayment = Math.max(Math.floor(currentBalance/100), 25);\n    let payment = monthlyMinimumPayment + Math.ceil(currentBalance/paymentsLeft);\n    item.payment = `-${moneyDisplay(payment)}`;\n    \n    currentBalance -= payment;\n\t  item.balance = moneyDisplay(currentBalance);\n    \n    returnArray.push(item);\n  }\n  return returnArray;\n};"
+      ]
+    },
+    "mtime": 1507535070403
+  },
+  "{\"filename\":\"/app/view-models-and-helpers.js\",\"env\":{},\"retainLines\":false,\"highlightCode\":true,\"suppressDeprecationMessages\":false,\"presets\":[],\"plugins\":[[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],{\"loose\":false,\"spec\":false}],[[],null],[[],null],[[],{\"spec\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"async\":false,\"asyncGenerators\":false}]],\"ignore\":[],\"code\":true,\"metadata\":true,\"ast\":true,\"comments\":true,\"compact\":\"auto\",\"minified\":false,\"sourceRoot\":\"/app\",\"babelrc\":true,\"sourceType\":\"module\",\"moduleIds\":false,\"passPerPreset\":false,\"parserOpts\":false,\"generatorOpts\":false}:6.24.1": {
+    "metadata": {
+      "usedHelpers": [
+        "slicedToArray"
+      ],
+      "marked": [],
+      "modules": {
+        "imports": [],
+        "exports": {
+          "exported": [],
+          "specifiers": []
+        }
+      }
+    },
+    "options": {
+      "filename": "/app/view-models-and-helpers.js",
+      "filenameRelative": "/app/view-models-and-helpers.js",
+      "env": {},
+      "retainLines": false,
+      "highlightCode": true,
+      "suppressDeprecationMessages": false,
+      "presets": [],
+      "plugins": [
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false,
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "async": false,
+            "asyncGenerators": false
+          }
+        ]
+      ],
+      "ignore": [],
+      "code": true,
+      "metadata": true,
+      "ast": false,
+      "comments": true,
+      "compact": "auto",
+      "minified": false,
+      "sourceMaps": "both",
+      "sourceMapTarget": "view-models-and-helpers.js",
+      "sourceFileName": "view-models-and-helpers.js",
+      "sourceRoot": "/app",
+      "babelrc": false,
+      "sourceType": "module",
+      "moduleRoot": "/app",
+      "moduleIds": false,
+      "passPerPreset": false,
+      "parserOpts": false,
+      "generatorOpts": false,
+      "basename": "view-models-and-helpers"
+    },
+    "ignored": false,
+    "code": "'use strict';\n\nvar _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i[\"return\"]) _i[\"return\"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError(\"Invalid attempt to destructure non-iterable instance\"); } }; }();\n\nvar qs = require('querystring');\nvar moment = require('moment');\nrequire('moment-duration-format');\nvar _ = require('lodash');\n\nvar _require = require('./constants.js'),\n    TIME_FORMAT = _require.TIME_FORMAT;\n\nvar timeViewmodel = function timeViewmodel(_ref) {\n  var local = _ref.local,\n      utc = _ref.utc;\n\n  return {\n    local: {\n      int: local,\n      iso: moment(local * 1000).format(),\n      string: moment(local * 1000).format(TIME_FORMAT)\n    },\n    utc: {\n      int: utc,\n      iso: moment.utc(utc * 1000).format(),\n      string: moment.utc(utc * 1000).format(TIME_FORMAT)\n    }\n  };\n};\n\nvar flightViewmodel = function flightViewmodel(_ref2) {\n  var airline = _ref2.airline,\n      flight_no = _ref2.flight_no,\n      flyFrom = _ref2.flyFrom,\n      flyTo = _ref2.flyTo,\n      isReturn = _ref2.return,\n      departureTime = _ref2.dTime,\n      departureTimeUTC = _ref2.dTimeUTC,\n      arrivalTime = _ref2.aTime,\n      arrivalTimeUTC = _ref2.aTimeUTC;\n\n  return {\n    airline: airline,\n    flight_no: flight_no,\n    flyFrom: flyFrom,\n    flyTo: flyTo,\n    direction: isReturn ? 'Back' : 'There',\n\n    departure: {\n      time: timeViewmodel({ local: departureTime, utc: departureTimeUTC })\n    },\n    arrival: {\n      time: timeViewmodel({ local: arrivalTime, utc: arrivalTimeUTC })\n    }\n  };\n};\n\nvar timeOnDate = function timeOnDate(time, dateString) {\n  return moment(time.local.iso).format('YYYY-MM-DD') === dateString;\n};\n\nvar formatArray = function formatArray(arr, format) {\n  return arr.map(function (time) {\n    return moment(time).format(format);\n  });\n};\n\nvar getFlightStartAndEnd = function getFlightStartAndEnd(flight) {\n  return {\n    start: flight.start.time.local.iso,\n    end: flight.end.time.local.iso\n  };\n};\n\nvar flightStartsAfterTime = function flightStartsAfterTime(flight, startHourFilter) {\n  var _getFlightStartAndEnd = getFlightStartAndEnd(flight),\n      start = _getFlightStartAndEnd.start;\n\n  var _formatArray = formatArray([start], 'HH:mm'),\n      _formatArray2 = _slicedToArray(_formatArray, 1),\n      startTime = _formatArray2[0];\n\n  return startTime > startHourFilter;\n};\n\nvar flightEndsAfterTime = function flightEndsAfterTime(flight, endHourFilter) {\n  var _getFlightStartAndEnd2 = getFlightStartAndEnd(flight),\n      end = _getFlightStartAndEnd2.end;\n\n  var _formatArray3 = formatArray([end], 'HH:mm'),\n      _formatArray4 = _slicedToArray(_formatArray3, 1),\n      endTime = _formatArray4[0];\n\n  return endTime > endHourFilter;\n};\n\nvar flightStartsAndEndsBetweenTimes = function flightStartsAndEndsBetweenTimes(flight, startHourFilter, endHourFilter) {\n  var _getFlightStartAndEnd3 = getFlightStartAndEnd(flight),\n      start = _getFlightStartAndEnd3.start,\n      end = _getFlightStartAndEnd3.end;\n\n  var isInZone = function isInZone(item) {\n    return item > startHourFilter && item < endHourFilter;\n  };\n\n  var _formatArray5 = formatArray([start, end], 'HH:mm'),\n      _formatArray6 = _slicedToArray(_formatArray5, 2),\n      startTime = _formatArray6[0],\n      endTime = _formatArray6[1];\n\n  var startTimeIsInZone = isInZone(startTime);\n  var endTimeIsInZone = isInZone(endTime);\n  return startTimeIsInZone && endTimeIsInZone;\n};\n\nvar flightStartsAndEndsWithinHoursOnSameDay = function flightStartsAndEndsWithinHoursOnSameDay(flight, startHourFilter, endHourFilter) {\n  var _getFlightStartAndEnd4 = getFlightStartAndEnd(flight),\n      start = _getFlightStartAndEnd4.start,\n      end = _getFlightStartAndEnd4.end;\n\n  var _formatArray7 = formatArray([start, end], 'YYYY-MM-DD'),\n      _formatArray8 = _slicedToArray(_formatArray7, 2),\n      startDay = _formatArray8[0],\n      endDay = _formatArray8[1];\n\n  var isSameDay = startDay === endDay;\n  return flightStartsAndEndsBetweenTimes(flight, startHourFilter, endHourFilter) && isSameDay;\n};\n\nvar flightStartsOnDays = function flightStartsOnDays(flight, startDaysArray) {\n  var _getFlightStartAndEnd5 = getFlightStartAndEnd(flight),\n      start = _getFlightStartAndEnd5.start;\n\n  var _formatArray9 = formatArray([start], 'dddd'),\n      _formatArray10 = _slicedToArray(_formatArray9, 1),\n      startDay = _formatArray10[0];\n\n  return startDaysArray.includes(startDay);\n};\n\nvar routeViewmodel = function routeViewmodel(flights) {\n  var startFlight = _.minBy(flights, function (flight) {\n    return flight.departure.time.utc.iso;\n  });\n  var endFlight = _.maxBy(flights, function (flight) {\n    return flight.arrival.time.utc.iso;\n  });\n  return {\n    flights: flights,\n    start: {\n      from: startFlight.flyFrom,\n      to: startFlight.flyTo,\n      time: startFlight.departure.time,\n      flight: startFlight\n    },\n    end: {\n      from: endFlight.flyFrom,\n      to: endFlight.flyTo,\n      time: endFlight.arrival.time,\n      flight: endFlight\n    }\n    // length, layovertime,\n  };\n};\n\nvar deepUrlFromIdAndBookingToken = function deepUrlFromIdAndBookingToken(id, booking_token) {\n  var queryParams = {\n    flightsId: id,\n    booking_token: booking_token,\n    type: 'default',\n    currency: 'USD',\n    lang: 'en'\n  };\n  var queryString = qs.stringify(queryParams);\n  return 'https://www.skypicker.com/deep?' + queryString;\n};\n\nvar searchResultViewmodel = function searchResultViewmodel(allOfIt) {\n  var price = allOfIt.price,\n      route = allOfIt.route,\n      duration = allOfIt.duration,\n      id = allOfIt.id,\n      booking_token = allOfIt.booking_token;\n\n  var theRoute = route.map(flightViewmodel);\n  var there = routeViewmodel(theRoute.filter(function (flight) {\n    return flight.direction === 'There';\n  }));\n  var back = routeViewmodel(theRoute.filter(function (flight) {\n    return flight.direction === 'Back';\n  }));\n  var durationViewmodel = {\n    there: {\n      seconds: duration.departure,\n      string: moment.duration(duration.departure, 'seconds').format()\n    },\n    back: {\n      seconds: duration.return,\n      string: moment.duration(duration.return, 'seconds').format()\n    },\n    total: {\n      seconds: duration.total,\n      string: moment.duration(duration.total, 'seconds').format()\n    }\n  };\n\n  var hours = _.get(durationViewmodel, 'total.seconds') / 60 / 60;\n  var dollarsPerHour = 70;\n  var hourPenalty = Math.max(0, hours - 11) * dollarsPerHour;\n  var locationPenalty = there.end.to !== 'BDL' ? 30 + 4 * dollarsPerHour : 0;\n\n  return {\n    price: price,\n    deepLink: deepUrlFromIdAndBookingToken(id, booking_token),\n    duration: durationViewmodel,\n    there: there,\n    back: back,\n    start: there.start,\n    end: back.end,\n\n    effectiveWeight: {\n      number: price + hourPenalty + locationPenalty,\n      string: '$' + price + ' (+ $' + hourPenalty + ' + $' + locationPenalty + ')'\n    }\n  };\n};\n\nmodule.exports = {\n  flightViewmodel: flightViewmodel,\n  routeViewmodel: routeViewmodel,\n  searchResultViewmodel: searchResultViewmodel,\n\n  flightStartsAfterTime: flightStartsAfterTime,\n  flightEndsAfterTime: flightEndsAfterTime,\n  flightStartsAndEndsBetweenTimes: flightStartsAndEndsBetweenTimes,\n  flightStartsAndEndsWithinHoursOnSameDay: flightStartsAndEndsWithinHoursOnSameDay,\n  flightStartsOnDays: flightStartsOnDays,\n  timeOnDate: timeOnDate\n};\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZpZXctbW9kZWxzLWFuZC1oZWxwZXJzLmpzIl0sIm5hbWVzIjpbInFzIiwicmVxdWlyZSIsIm1vbWVudCIsIl8iLCJUSU1FX0ZPUk1BVCIsInRpbWVWaWV3bW9kZWwiLCJsb2NhbCIsInV0YyIsImludCIsImlzbyIsImZvcm1hdCIsInN0cmluZyIsImZsaWdodFZpZXdtb2RlbCIsImFpcmxpbmUiLCJmbGlnaHRfbm8iLCJmbHlGcm9tIiwiZmx5VG8iLCJpc1JldHVybiIsInJldHVybiIsImRlcGFydHVyZVRpbWUiLCJkVGltZSIsImRlcGFydHVyZVRpbWVVVEMiLCJkVGltZVVUQyIsImFycml2YWxUaW1lIiwiYVRpbWUiLCJhcnJpdmFsVGltZVVUQyIsImFUaW1lVVRDIiwiZGlyZWN0aW9uIiwiZGVwYXJ0dXJlIiwidGltZSIsImFycml2YWwiLCJ0aW1lT25EYXRlIiwiZGF0ZVN0cmluZyIsImZvcm1hdEFycmF5IiwiYXJyIiwibWFwIiwiZ2V0RmxpZ2h0U3RhcnRBbmRFbmQiLCJzdGFydCIsImZsaWdodCIsImVuZCIsImZsaWdodFN0YXJ0c0FmdGVyVGltZSIsInN0YXJ0SG91ckZpbHRlciIsInN0YXJ0VGltZSIsImZsaWdodEVuZHNBZnRlclRpbWUiLCJlbmRIb3VyRmlsdGVyIiwiZW5kVGltZSIsImZsaWdodFN0YXJ0c0FuZEVuZHNCZXR3ZWVuVGltZXMiLCJpc0luWm9uZSIsIml0ZW0iLCJzdGFydFRpbWVJc0luWm9uZSIsImVuZFRpbWVJc0luWm9uZSIsImZsaWdodFN0YXJ0c0FuZEVuZHNXaXRoaW5Ib3Vyc09uU2FtZURheSIsInN0YXJ0RGF5IiwiZW5kRGF5IiwiaXNTYW1lRGF5IiwiZmxpZ2h0U3RhcnRzT25EYXlzIiwic3RhcnREYXlzQXJyYXkiLCJpbmNsdWRlcyIsInJvdXRlVmlld21vZGVsIiwic3RhcnRGbGlnaHQiLCJtaW5CeSIsImZsaWdodHMiLCJlbmRGbGlnaHQiLCJtYXhCeSIsImZyb20iLCJ0byIsImRlZXBVcmxGcm9tSWRBbmRCb29raW5nVG9rZW4iLCJpZCIsImJvb2tpbmdfdG9rZW4iLCJxdWVyeVBhcmFtcyIsImZsaWdodHNJZCIsInR5cGUiLCJjdXJyZW5jeSIsImxhbmciLCJxdWVyeVN0cmluZyIsInN0cmluZ2lmeSIsInNlYXJjaFJlc3VsdFZpZXdtb2RlbCIsImFsbE9mSXQiLCJwcmljZSIsInJvdXRlIiwiZHVyYXRpb24iLCJ0aGVSb3V0ZSIsInRoZXJlIiwiZmlsdGVyIiwiYmFjayIsImR1cmF0aW9uVmlld21vZGVsIiwic2Vjb25kcyIsInRvdGFsIiwiaG91cnMiLCJnZXQiLCJkb2xsYXJzUGVySG91ciIsImhvdXJQZW5hbHR5IiwiTWF0aCIsIm1heCIsImxvY2F0aW9uUGVuYWx0eSIsImRlZXBMaW5rIiwiZWZmZWN0aXZlV2VpZ2h0IiwibnVtYmVyIiwibW9kdWxlIiwiZXhwb3J0cyJdLCJtYXBwaW5ncyI6Ijs7OztBQUFBLElBQU1BLEtBQUtDLFFBQVEsYUFBUixDQUFYO0FBQ0EsSUFBTUMsU0FBU0QsUUFBUSxRQUFSLENBQWY7QUFDQUEsUUFBUSx3QkFBUjtBQUNBLElBQU1FLElBQUlGLFFBQVEsUUFBUixDQUFWOztlQUV3QkEsUUFBUSxnQkFBUixDO0lBQWhCRyxXLFlBQUFBLFc7O0FBRVIsSUFBTUMsZ0JBQWdCLFNBQWhCQSxhQUFnQixPQUFvQjtBQUFBLE1BQWpCQyxLQUFpQixRQUFqQkEsS0FBaUI7QUFBQSxNQUFWQyxHQUFVLFFBQVZBLEdBQVU7O0FBQ3hDLFNBQU87QUFDTEQsV0FBTztBQUNMRSxXQUFLRixLQURBO0FBRUxHLFdBQUtQLE9BQU9JLFFBQVEsSUFBZixFQUFxQkksTUFBckIsRUFGQTtBQUdMQyxjQUFRVCxPQUFPSSxRQUFRLElBQWYsRUFBcUJJLE1BQXJCLENBQTRCTixXQUE1QjtBQUhILEtBREY7QUFNTEcsU0FBSztBQUNIQyxXQUFLRCxHQURGO0FBRUhFLFdBQUtQLE9BQU9LLEdBQVAsQ0FBV0EsTUFBTSxJQUFqQixFQUF1QkcsTUFBdkIsRUFGRjtBQUdIQyxjQUFRVCxPQUFPSyxHQUFQ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QSxNQUFNSyxpQkFBaUIsRUFBdkI7QUFDQSxNQUFNQyxjQUFlQyxLQUFLQyxHQUFMLENBQVMsQ0FBVCxFQUFZTCxRQUFRLEVBQXBCLElBQTBCRSxjQUEvQztBQUNBLE1BQU1JLGtCQUFrQlosTUFBTTNDLEdBQU4sQ0FBVTBCLEVBQVYsS0FBaUIsS0FBakIsR0FBeUIsS0FBTSxJQUFJeUIsY0FBbkMsR0FBcUQsQ0FBN0U7O0FBRUEsU0FBTztBQUNMWixnQkFESztBQUVMaUIsY0FBVTdCLDZCQUE2QkMsRUFBN0IsRUFBaUNDLGFBQWpDLENBRkw7QUFHTFksY0FBVUssaUJBSEw7QUFJTEgsZ0JBSks7QUFLTEUsY0FMSztBQU1ML0MsV0FBTzZDLE1BQU03QyxLQU5SO0FBT0xFLFNBQUs2QyxLQUFLN0MsR0FQTDs7QUFTTHlELHFCQUFpQjtBQUNmQyxjQUFRbkIsUUFBUWEsV0FBUixHQUFzQkcsZUFEZjtBQUVmbkYsb0JBQVltRSxLQUFaLGFBQXlCYSxXQUF6QixZQUEyQ0csZUFBM0M7QUFGZTtBQVRaLEdBQVA7QUFjRCxDQTdDRDs7QUErQ0FJLE9BQU9DLE9BQVAsR0FBaUI7QUFDZnZGLGtDQURlO0FBRWY4QyxnQ0FGZTtBQUdma0IsOENBSGU7O0FBS2ZwQyw4Q0FMZTtBQU1mRywwQ0FOZTtBQU9mRyxrRUFQZTtBQVFmSyxrRkFSZTtBQVNmSSx3Q0FUZTtBQVVmeEI7QUFWZSxDQUFqQiIsImZpbGUiOiJ2aWV3LW1vZGVscy1hbmQtaGVscGVycy5qcyIsInNvdXJjZVJvb3QiOiIvYXBwIiwic291cmNlc0NvbnRlbnQiOlsiY29uc3QgcXMgPSByZXF1aXJlKCdxdWVyeXN0cmluZycpO1xuY29uc3QgbW9tZW50ID0gcmVxdWlyZSgnbW9tZW50Jyk7XG5yZXF1aXJlKCdtb21lbnQtZHVyYXRpb24tZm9ybWF0Jyk7XG5jb25zdCBfID0gcmVxdWlyZSgnbG9kYXNoJyk7XG5cbmNvbnN0IHsgVElNRV9GT1JNQVQgfSA9IHJlcXVpcmUoJy4vY29uc3RhbnRzLmpzJyk7XG5cbmNvbnN0IHRpbWVWaWV3bW9kZWwgPSAoeyBsb2NhbCwgdXRjIH0pID0+IHtcbiAgcmV0dXJuIHtcbiAgICBsb2NhbDoge1xuICAgICAgaW50OiBsb2NhbCxcbiAgICAgIGlzbzogbW9tZW50KGxvY2FsICogMTAwMCkuZm9ybWF0KCksXG4gICAgICBzdHJpbmc6IG1vbWVudChsb2NhbCAqIDEwMDApLmZvcm1hdChUSU1FX0ZPUk1BVCksXG4gICAgfSxcbiAgICB1dGM6IHtcbiAgICAgIGludDogdXRjLFxuICAgICAgaXNvOiBtb21lbnQudXRjKHV0YyAqIDEwMDApLmZvcm1hdCgpLFxuICAgICAgc3RyaW5nOiBtb21lbnQudXRjKHV0YyAqIDEwMDApLmZvcm1hdChUSU1FX0ZPUk1BVCksXG4gICAgfSxcbiAgfTtcbn07XG5cbmNvbnN0IGZsaWdodFZpZXdtb2RlbCA9ICh7XG4gIGFpcmxpbmUsXG4gIGZsaWdodF9ubyxcbiAgZmx5RnJvbSxcbiAgZmx5VG8sXG4gIHJldHVybjogaXNSZXR1cm4sXG5cbiAgZFRpbWU6IGRlcGFydHVyZVRpbWUsXG4gIGRUaW1lVVRDOiBkZXBhcnR1cmVUaW1lVVRDLFxuICBhVGltZTogYXJyaXZhbFRpbWUsXG4gIGFUaW1lVVRDOiBhcnJpdmFsVGltZVVUQyxcbn0pID0+IHtcbiAgcmV0dXJuIHtcbiAgICBhaXJsaW5lLFxuICAgIGZsaWdodF9ubyxcbiAgICBmbHlGcm9tLFxuICAgIGZseVRvLFxuICAgIGRpcmVjdGlvbjogaXNSZXR1cm4gPyAnQmFjaycgOiAnVGhlcmUnLFxuXG4gICAgZGVwYXJ0dXJlOiB7XG4gICAgICB0aW1lOiB0aW1lVmlld21vZGVsKHsgbG9jYWw6IGRlcGFydHVyZVRpbWUsIHV0YzogZGVwYXJ0dXJlVGltZVVUQyB9KSxcbiAgICB9LFxuICAgIGFycml2YWw6IHtcbiAgICAgIHRpbWU6IHRpbWVWaWV3bW9kZWwoeyBsb2NhbDogYXJyaXZhbFRpbWUsIHV0YzogYXJyaXZhbFRpbWVVVEMgfSksXG4gICAgfSxcbiAgfTtcbn07XG5cbmNvbnN0IHRpbWVPbkRhdGUgPSAodGltZSwgZGF0ZVN0cmluZykgPT4gKG1vbWVudCh0aW1lLmxvY2FsLmlzbykuZm9ybWF0KCdZWVlZLU1NLUREJykgPT09IGRhdGVTdHJpbmcpO1xuXG5jb25zdCBmb3JtYXRBcnJheSA9IChhcnIsIGZvcm1hdCkgPT4ge1xuICByZXR1cm4gYXJyLm1hcCh0aW1lID0+IG1vbWVudCh0aW1lKS5mb3JtYXQoZm9ybWF0KSk7XG59XG5cbmNvbnN0IGdldEZsaWdodFN0YXJ0QW5kRW5kID0gZmxpZ2h0ID0+ICh7XG4gIHN0YXJ0OiBmbGlnaHQuc3RhcnQudGltZS5sb2NhbC5pc28sXG4gIGVuZDogICBmbGlnaHQuZW5kLnRpbWUubG9jYWwuaXNvLFxufSk7XG5cbmNvbnN0IGZsaWdodFN0YXJ0c0FmdGVyVGltZSA9IChmbGlnaHQsIHN0YXJ0SG91ckZpbHRlcikgPT4ge1xuICBjb25zdCB7IHN0YXJ0IH0gPSBnZXRGbGlnaHRTdGFydEFuZEVuZChmbGlnaHQpO1xuICBjb25zdCBbIHN0YXJ0VGltZSBdID0gZm9ybWF0QXJyYXkoW3N0YXJ0XSwgJ0hIOm1tJyk7XG4gIHJldHVybiAoc3RhcnRUaW1lID4gc3RhcnRIb3VyRmlsdGVyKTtcbn07XG5cbmNvbnN0IGZsaWdodEVuZHNBZnRlclRpbWUgPSAoZmxpZ2h0LCBlbmRIb3VyRmlsdGVyKSA9PiB7XG4gIGNvbnN0IHsgZW5kIH0gPSBnZXRGbGlnaHRTdGFydEFuZEVuZChmbGlnaHQpO1xuICBjb25zdCBbIGVuZFRpbWUgXSA9IGZvcm1hdEFycmF5KFtlbmRdLCAnSEg6bW0nKTtcbiAgcmV0dXJuIChlbmRUaW1lID4gZW5kSG91ckZpbHRlcik7XG59XG5cbmNvbnN0IGZsaWdodFN0YXJ0c0FuZEVuZHNCZXR3ZWVuVGltZXMgPSAoZmxpZ2h0LCBzdGFydEhvdXJGaWx0ZXIsIGVuZEhvdXJGaWx0ZXIpID0+IHtcbiAgY29uc3QgeyBzdGFydCwgZW5kIH0gPSBnZXRGbGlnaHRTdGFydEFuZEVuZChmbGlnaHQpO1xuICBjb25zdCBpc0luWm9uZSA9IGl0ZW0gPT4gKChpdGVtID4gc3RhcnRIb3VyRmlsdGVyKSAmJiAoaXRlbSA8IGVuZEhvdXJGaWx0ZXIpKTtcbiAgY29uc3QgWyBzdGFydFRpbWUsIGVuZFRpbWUgXSA9IGZvcm1hdEFycmF5KFtzdGFydCwgZW5kXSwgJ0hIOm1tJyk7XG4gIGNvbnN0IHN0YXJ0VGltZUlzSW5ab25lID0gaXNJblpvbmUoc3RhcnRUaW1lKTtcbiAgY29uc3QgZW5kVGltZUlzSW5ab25lID0gaXNJblpvbmUoZW5kVGltZSk7XG4gIHJldHVybiAoXG4gICAgc3RhcnRUaW1lSXNJblpvbmUgJiYgZW5kVGltZUlzSW5ab25lXG4gICk7XG59O1xuXG5jb25zdCBmbGlnaHRTdGFydHNBbmRFbmRzV2l0aGluSG91cnNPblNhbWVEYXkgPSAoZmxpZ2h0LCBzdGFydEhvdXJGaWx0ZXIsIGVuZEhvdXJGaWx0ZXIpID0+IHtcbiAgY29uc3QgeyBzdGFydCwgZW5kIH0gPSBnZXRGbGlnaHRTdGFydEFuZEVuZChmbGlnaHQpO1xuICBjb25zdCBbIHN0YXJ0RGF5LCBlbmREYXkgXSA9IGZvcm1hdEFycmF5KFtzdGFydCwgZW5kXSwgJ1lZWVktTU0tREQnKTtcbiAgY29uc3QgaXNTYW1lRGF5ID0gKHN0YXJ0RGF5ID09PSBlbmREYXkpO1xuICByZXR1cm4gKFxuICAgIGZsaWdodFN0YXJ0c0FuZEVuZHNCZXR3ZWVuVGltZXMoZmxpZ2h0LCBzdGFydEhvdXJGaWx0ZXIsIGVuZEhvdXJGaWx0ZXIpICYmIGlzU2FtZURheVxuICApO1xufTtcblxuY29uc3QgZmxpZ2h0U3RhcnRzT25EYXlzID0gKGZsaWdodCwgc3RhcnREYXlzQXJyYXkpID0+IHtcbiAgY29uc3QgeyBzdGFydCB9ID0gZ2V0RmxpZ2h0U3RhcnRBbmRFbmQoZmxpZ2h0KTtcbiAgY29uc3QgWyBzdGFydERheSBdID0gZm9ybWF0QXJyYXkoW3N0YXJ0XSwgJ2RkZGQnKTtcbiAgcmV0dXJuIChzdGFydERheXNBcnJheS5pbmNsdWRlcyhzdGFydERheSkpO1xufTtcblxuY29uc3Qgcm91dGVWaWV3bW9kZWwgPSBmbGlnaHRzID0+IHtcbiAgY29uc3Qgc3RhcnRGbGlnaHQgPSBfLm1pbkJ5KGZsaWdodHMsIGZsaWdodCA9PiBmbGlnaHQuZGVwYXJ0dXJlLnRpbWUudXRjLmlzbyk7XG4gIGNvbnN0IGVuZEZsaWdodCA9IF8ubWF4QnkoZmxpZ2h0cywgZmxpZ2h0ID0+IGZsaWdodC5hcnJpdmFsLnRpbWUudXRjLmlzbyk7XG4gIHJldHVybiB7XG4gICAgZmxpZ2h0cyxcbiAgICBzdGFydDoge1xuICAgICAgZnJvbTogc3RhcnRGbGlnaHQuZmx5RnJvbSxcbiAgICAgIHRvOiBzdGFydEZsaWdodC5mbHlUbyxcbiAgICAgIHRpbWU6IHN0YXJ0RmxpZ2h0LmRlcGFydHVyZS50aW1lLFxuICAgICAgZmxpZ2h0OiBzdGFydEZsaWdodCxcbiAgICB9LFxuICAgIGVuZDoge1xuICAgICAgZnJvbTogZW5kRmxpZ2h0LmZseUZyb20sXG4gICAgICB0bzogZW5kRmxpZ2h0LmZseVRvLFxuICAgICAgdGltZTogZW5kRmxpZ2h0LmFycml2YWwudGltZSxcbiAgICAgIGZsaWdodDogZW5kRmxpZ2h0LFxuICAgIH1cbiAgICAvLyBsZW5ndGgsIGxheW92ZXJ0aW1lLFxuICB9O1xufTtcblxuY29uc3QgZGVlcFVybEZyb21JZEFuZEJvb2tpbmdUb2tlbiA9IChpZCwgYm9va2luZ190b2tlbikgPT4ge1xuICBjb25zdCBxdWVyeVBhcmFtcyA9IHtcbiAgICBmbGlnaHRzSWQ6IGlkLFxuICAgIGJvb2tpbmdfdG9rZW4sXG4gICAgdHlwZTogJ2RlZmF1bHQnLFxuICAgIGN1cnJlbmN5OiAnVVNEJyxcbiAgICBsYW5nOiAnZW4nLFxuICAgIC8vIGFmZmlsaWQ6ICd0b21fd3Jlbm5fcGVyc29uYWxfdXNlJyxcbiAgfVxuICBjb25zdCBxdWVyeVN0cmluZyA9IHFzLnN0cmluZ2lmeShxdWVyeVBhcmFtcyk7XG4gIHJldHVybiBgaHR0cHM6Ly93d3cuc2t5cGlja2VyLmNvbS9kZWVwPyR7cXVlcnlTdHJpbmd9YDtcbn1cblxuY29uc3Qgc2VhcmNoUmVzdWx0Vmlld21vZGVsID0gKGFsbE9mSXQpID0+IHtcbiAgY29uc3Qge1xuICAgIHByaWNlLFxuICAgIHJvdXRlLFxuICAgIGR1cmF0aW9uLFxuICAgIGlkLFxuICAgIGJvb2tpbmdfdG9rZW4sXG4gIH0gPSBhbGxPZkl0O1xuICBjb25zdCB0aGVSb3V0ZSA9IHJvdXRlLm1hcChmbGlnaHRWaWV3bW9kZWwpO1xuICBjb25zdCB0aGVyZSA9IHJvdXRlVmlld21vZGVsKHRoZVJvdXRlLmZpbHRlcihmbGlnaHQgPT4gZmxpZ2h0LmRpcmVjdGlvbiA9PT0gJ1RoZXJlJykpO1xuICBjb25zdCBiYWNrID0gcm91dGVWaWV3bW9kZWwodGhlUm91dGUuZmlsdGVyKGZsaWdodCA9PiBmbGlnaHQuZGlyZWN0aW9uID09PSAnQmFjaycpKTtcbiAgY29uc3QgZHVyYXRpb25WaWV3bW9kZWwgPSB7XG4gICAgdGhlcmU6IHtcbiAgICAgIHNlY29uZHM6IGR1cmF0aW9uLmRlcGFydHVyZSxcbiAgICAgIHN0cmluZzogbW9tZW50LmR1cmF0aW9uKGR1cmF0aW9uLmRlcGFydHVyZSwgJ3NlY29uZHMnKS5mb3JtYXQoKVxuICAgIH0sXG4gICAgYmFjazoge1xuICAgICAgc2Vjb25kczogZHVyYXRpb24ucmV0dXJuLFxuICAgICAgc3RyaW5nOiBtb21lbnQuZHVyYXRpb24oZHVyYXRpb24ucmV0dXJuLCAnc2Vjb25kcycpLmZvcm1hdCgpXG4gICAgfSxcbiAgICB0b3RhbDoge1xuICAgICAgc2Vjb25kczogZHVyYXRpb24udG90YWwsXG4gICAgICBzdHJpbmc6IG1vbWVudC5kdXJhdGlvbihkdXJhdGlvbi50b3RhbCwgJ3NlY29uZHMnKS5mb3JtYXQoKVxuICAgIH0sXG4gIH07XG5cbiAgY29uc3QgaG91cnMgPSBfLmdldChkdXJhdGlvblZpZXdtb2RlbCwgJ3RvdGFsLnNlY29uZHMnKS82MC82MDtcbiAgY29uc3QgZG9sbGFyc1BlckhvdXIgPSA3MDtcbiAgY29uc3QgaG91clBlbmFsdHkgPSAoTWF0aC5tYXgoMCwgaG91cnMgLSAxMSkgKiBkb2xsYXJzUGVySG91cik7XG4gIGNvbnN0IGxvY2F0aW9uUGVuYWx0eSA9IHRoZXJlLmVuZC50byAhPT0gJ0JETCcgPyAzMCArICg0ICogZG9sbGFyc1BlckhvdXIpIDogMDtcblxuICByZXR1cm4ge1xuICAgIHByaWNlLFxuICAgIGRlZXBMaW5rOiBkZWVwVXJsRnJvbUlkQW5kQm9va2luZ1Rva2VuKGlkLCBib29raW5nX3Rva2VuKSxcbiAgICBkdXJhdGlvbjogZHVyYXRpb25WaWV3bW9kZWwsXG4gICAgdGhlcmUsXG4gICAgYmFjayxcbiAgICBzdGFydDogdGhlcmUuc3RhcnQsXG4gICAgZW5kOiBiYWNrLmVuZCxcblxuICAgIGVmZmVjdGl2ZVdlaWdodDoge1xuICAgICAgbnVtYmVyOiBwcmljZSArIGhvdXJQZW5hbHR5ICsgbG9jYXRpb25QZW5hbHR5LFxuICAgICAgc3RyaW5nOiBgJCR7cHJpY2V9ICgrICQke2hvdXJQZW5hbHR5fSArICQke2xvY2F0aW9uUGVuYWx0eX0pYCxcbiAgICB9LFxuICB9O1xufTtcblxubW9kdWxlLmV4cG9ydHMgPSB7XG4gIGZsaWdodFZpZXdtb2RlbCxcbiAgcm91dGVWaWV3bW9kZWwsXG4gIHNlYXJjaFJlc3VsdFZpZXdtb2RlbCxcblxuICBmbGlnaHRTdGFydHNBZnRlclRpbWUsXG4gIGZsaWdodEVuZHNBZnRlclRpbWUsXG4gIGZsaWdodFN0YXJ0c0FuZEVuZHNCZXR3ZWVuVGltZXMsXG4gIGZsaWdodFN0YXJ0c0FuZEVuZHNXaXRoaW5Ib3Vyc09uU2FtZURheSxcbiAgZmxpZ2h0U3RhcnRzT25EYXlzLFxuICB0aW1lT25EYXRlLFxufTtcbiJdfQ==",
+    "ast": null,
+    "map": {
+      "version": 3,
+      "sources": [
+        "view-models-and-helpers.js"
+      ],
+      "names": [
+        "qs",
+        "require",
+        "moment",
+        "_",
+        "TIME_FORMAT",
+        "timeViewmodel",
+        "local",
+        "utc",
+        "int",
+        "iso",
+        "format",
+        "string",
+        "flightViewmodel",
+        "airline",
+        "flight_no",
+        "flyFrom",
+        "flyTo",
+        "isReturn",
+        "return",
+        "departureTime",
+        "dTime",
+        "departureTimeUTC",
+        "dTimeUTC",
+        "arrivalTime",
+        "aTime",
+        "arrivalTimeUTC",
+        "aTimeUTC",
+        "direction",
+        "departure",
+        "time",
+        "arrival",
+        "timeOnDate",
+        "dateString",
+        "formatArray",
+        "arr",
+        "map",
+        "getFlightStartAndEnd",
+        "start",
+        "flight",
+        "end",
+        "flightStartsAfterTime",
+        "startHourFilter",
+        "startTime",
+        "flightEndsAfterTime",
+        "endHourFilter",
+        "endTime",
+        "flightStartsAndEndsBetweenTimes",
+        "isInZone",
+        "item",
+        "startTimeIsInZone",
+        "endTimeIsInZone",
+        "flightStartsAndEndsWithinHoursOnSameDay",
+        "startDay",
+        "endDay",
+        "isSameDay",
+        "flightStartsOnDays",
+        "startDaysArray",
+        "includes",
+        "routeViewmodel",
+        "startFlight",
+        "minBy",
+        "flights",
+        "endFlight",
+        "maxBy",
+        "from",
+        "to",
+        "deepUrlFromIdAndBookingToken",
+        "id",
+        "booking_token",
+        "queryParams",
+        "flightsId",
+        "type",
+        "currency",
+        "lang",
+        "queryString",
+        "stringify",
+        "searchResultViewmodel",
+        "allOfIt",
+        "price",
+        "route",
+        "duration",
+        "theRoute",
+        "there",
+        "filter",
+        "back",
+        "durationViewmodel",
+        "seconds",
+        "total",
+        "hours",
+        "get",
+        "dollarsPerHour",
+        "hourPenalty",
+        "Math",
+        "max",
+        "locationPenalty",
+        "deepLink",
+        "effectiveWeight",
+        "number",
+        "module",
+        "exports"
+      ],
+      "mappings": "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",
+      "file": "view-models-and-helpers.js",
+      "sourceRoot": "/app",
+      "sourcesContent": [
+        "const qs = require('querystring');\nconst moment = require('moment');\nrequire('moment-duration-format');\nconst _ = require('lodash');\n\nconst { TIME_FORMAT } = require('./constants.js');\n\nconst timeViewmodel = ({ local, utc }) => {\n  return {\n    local: {\n      int: local,\n      iso: moment(local * 1000).format(),\n      string: moment(local * 1000).format(TIME_FORMAT),\n    },\n    utc: {\n      int: utc,\n      iso: moment.utc(utc * 1000).format(),\n      string: moment.utc(utc * 1000).format(TIME_FORMAT),\n    },\n  };\n};\n\nconst flightViewmodel = ({\n  airline,\n  flight_no,\n  flyFrom,\n  flyTo,\n  return: isReturn,\n\n  dTime: departureTime,\n  dTimeUTC: departureTimeUTC,\n  aTime: arrivalTime,\n  aTimeUTC: arrivalTimeUTC,\n}) => {\n  return {\n    airline,\n    flight_no,\n    flyFrom,\n    flyTo,\n    direction: isReturn ? 'Back' : 'There',\n\n    departure: {\n      time: timeViewmodel({ local: departureTime, utc: departureTimeUTC }),\n    },\n    arrival: {\n      time: timeViewmodel({ local: arrivalTime, utc: arrivalTimeUTC }),\n    },\n  };\n};\n\nconst timeOnDate = (time, dateString) => (moment(time.local.iso).format('YYYY-MM-DD') === dateString);\n\nconst formatArray = (arr, format) => {\n  return arr.map(time => moment(time).format(format));\n}\n\nconst getFlightStartAndEnd = flight => ({\n  start: flight.start.time.local.iso,\n  end:   flight.end.time.local.iso,\n});\n\nconst flightStartsAfterTime = (flight, startHourFilter) => {\n  const { start } = getFlightStartAndEnd(flight);\n  const [ startTime ] = formatArray([start], 'HH:mm');\n  return (startTime > startHourFilter);\n};\n\nconst flightEndsAfterTime = (flight, endHourFilter) => {\n  const { end } = getFlightStartAndEnd(flight);\n  const [ endTime ] = formatArray([end], 'HH:mm');\n  return (endTime > endHourFilter);\n}\n\nconst flightStartsAndEndsBetweenTimes = (flight, startHourFilter, endHourFilter) => {\n  const { start, end } = getFlightStartAndEnd(flight);\n  const isInZone = item => ((item > startHourFilter) && (item < endHourFilter));\n  const [ startTime, endTime ] = formatArray([start, end], 'HH:mm');\n  const startTimeIsInZone = isInZone(startTime);\n  const endTimeIsInZone = isInZone(endTime);\n  return (\n    startTimeIsInZone && endTimeIsInZone\n  );\n};\n\nconst flightStartsAndEndsWithinHoursOnSameDay = (flight, startHourFilter, endHourFilter) => {\n  const { start, end } = getFlightStartAndEnd(flight);\n  const [ startDay, endDay ] = formatArray([start, end], 'YYYY-MM-DD');\n  const isSameDay = (startDay === endDay);\n  return (\n    flightStartsAndEndsBetweenTimes(flight, startHourFilter, endHourFilter) && isSameDay\n  );\n};\n\nconst flightStartsOnDays = (flight, startDaysArray) => {\n  const { start } = getFlightStartAndEnd(flight);\n  const [ startDay ] = formatArray([start], 'dddd');\n  return (startDaysArray.includes(startDay));\n};\n\nconst routeViewmodel = flights => {\n  const startFlight = _.minBy(flights, flight => flight.departure.time.utc.iso);\n  const endFlight = _.maxBy(flights, flight => flight.arrival.time.utc.iso);\n  return {\n    flights,\n    start: {\n      from: startFlight.flyFrom,\n      to: startFlight.flyTo,\n      time: startFlight.departure.time,\n      flight: startFlight,\n    },\n    end: {\n      from: endFlight.flyFrom,\n      to: endFlight.flyTo,\n      time: endFlight.arrival.time,\n      flight: endFlight,\n    }\n    // length, layovertime,\n  };\n};\n\nconst deepUrlFromIdAndBookingToken = (id, booking_token) => {\n  const queryParams = {\n    flightsId: id,\n    booking_token,\n    type: 'default',\n    currency: 'USD',\n    lang: 'en',\n    // affilid: 'tom_wrenn_personal_use',\n  }\n  const queryString = qs.stringify(queryParams);\n  return `https://www.skypicker.com/deep?${queryString}`;\n}\n\nconst searchResultViewmodel = (allOfIt) => {\n  const {\n    price,\n    route,\n    duration,\n    id,\n    booking_token,\n  } = allOfIt;\n  const theRoute = route.map(flightViewmodel);\n  const there = routeViewmodel(theRoute.filter(flight => flight.direction === 'There'));\n  const back = routeViewmodel(theRoute.filter(flight => flight.direction === 'Back'));\n  const durationViewmodel = {\n    there: {\n      seconds: duration.departure,\n      string: moment.duration(duration.departure, 'seconds').format()\n    },\n    back: {\n      seconds: duration.return,\n      string: moment.duration(duration.return, 'seconds').format()\n    },\n    total: {\n      seconds: duration.total,\n      string: moment.duration(duration.total, 'seconds').format()\n    },\n  };\n\n  const hours = _.get(durationViewmodel, 'total.seconds')/60/60;\n  const dollarsPerHour = 70;\n  const hourPenalty = (Math.max(0, hours - 11) * dollarsPerHour);\n  const locationPenalty = there.end.to !== 'BDL' ? 30 + (4 * dollarsPerHour) : 0;\n\n  return {\n    price,\n    deepLink: deepUrlFromIdAndBookingToken(id, booking_token),\n    duration: durationViewmodel,\n    there,\n    back,\n    start: there.start,\n    end: back.end,\n\n    effectiveWeight: {\n      number: price + hourPenalty + locationPenalty,\n      string: `$${price} (+ $${hourPenalty} + $${locationPenalty})`,\n    },\n  };\n};\n\nmodule.exports = {\n  flightViewmodel,\n  routeViewmodel,\n  searchResultViewmodel,\n\n  flightStartsAfterTime,\n  flightEndsAfterTime,\n  flightStartsAndEndsBetweenTimes,\n  flightStartsAndEndsWithinHoursOnSameDay,\n  flightStartsOnDays,\n  timeOnDate,\n};\n"
+      ]
+    },
+    "mtime": 1507749048719
+  },
+  "{\"filename\":\"/app/constants.js\",\"env\":{},\"retainLines\":false,\"highlightCode\":true,\"suppressDeprecationMessages\":false,\"presets\":[],\"plugins\":[[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],null],[[],{\"loose\":false,\"spec\":false}],[[],null],[[],null],[[],{\"spec\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"async\":false,\"asyncGenerators\":false}]],\"ignore\":[],\"code\":true,\"metadata\":true,\"ast\":true,\"comments\":true,\"compact\":\"auto\",\"minified\":false,\"sourceRoot\":\"/app\",\"babelrc\":true,\"sourceType\":\"module\",\"moduleIds\":false,\"passPerPreset\":false,\"parserOpts\":false,\"generatorOpts\":false}:6.24.1": {
+    "metadata": {
+      "usedHelpers": [],
+      "marked": [],
+      "modules": {
+        "imports": [],
+        "exports": {
+          "exported": [],
+          "specifiers": []
+        }
+      }
+    },
+    "options": {
+      "filename": "/app/constants.js",
+      "filenameRelative": "/app/constants.js",
+      "env": {},
+      "retainLines": false,
+      "highlightCode": true,
+      "suppressDeprecationMessages": false,
+      "presets": [],
+      "plugins": [
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false,
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "async": false,
+            "asyncGenerators": false
+          }
+        ]
+      ],
+      "ignore": [],
+      "code": true,
+      "metadata": true,
+      "ast": false,
+      "comments": true,
+      "compact": "auto",
+      "minified": false,
+      "sourceMaps": "both",
+      "sourceMapTarget": "constants.js",
+      "sourceFileName": "constants.js",
+      "sourceRoot": "/app",
+      "babelrc": false,
+      "sourceType": "module",
+      "moduleRoot": "/app",
+      "moduleIds": false,
+      "passPerPreset": false,
+      "parserOpts": false,
+      "generatorOpts": false,
+      "basename": "constants"
+    },
+    "ignored": false,
+    "code": "'use strict';\n\nmodule.exports = {\n    TIME_FORMAT: 'ddd MMM DD, YYYY HH:mm:ss'\n};\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNvbnN0YW50cy5qcyJdLCJuYW1lcyI6WyJtb2R1bGUiLCJleHBvcnRzIiwiVElNRV9GT1JNQVQiXSwibWFwcGluZ3MiOiI7O0FBQUFBLE9BQU9DLE9BQVAsR0FBaUI7QUFDYkMsaUJBQWE7QUFEQSxDQUFqQiIsImZpbGUiOiJjb25zdGFudHMuanMiLCJzb3VyY2VSb290IjoiL2FwcCIsInNvdXJjZXNDb250ZW50IjpbIm1vZHVsZS5leHBvcnRzID0ge1xuICAgIFRJTUVfRk9STUFUOiAnZGRkIE1NTSBERCwgWVlZWSBISDptbTpzcycsXG59OyJdfQ==",
+    "ast": null,
+    "map": {
+      "version": 3,
+      "sources": [
+        "constants.js"
+      ],
+      "names": [
+        "module",
+        "exports",
+        "TIME_FORMAT"
+      ],
+      "mappings": ";;AAAAA,OAAOC,OAAP,GAAiB;AACbC,iBAAa;AADA,CAAjB",
+      "file": "constants.js",
+      "sourceRoot": "/app",
+      "sourcesContent": [
+        "module.exports = {\n    TIME_FORMAT: 'ddd MMM DD, YYYY HH:mm:ss',\n};"
+      ]
+    },
+    "mtime": 1507749048687
+  }
+}

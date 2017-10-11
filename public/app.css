@@ -1,0 +1,80 @@
+.field {
+  font-weight: bold;
+}
+
+.airportLabel {
+  display: inline-block;
+  width: 35px;
+}
+
+.vertical-center {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.result {
+  display: flex;
+  flex-direction: row;
+
+  margin-bottom: 20px;
+  font-family: sans-serif;
+  min-height: 125px;
+}
+
+.resultInfo {
+  width: 150px;
+  background: #EFEFEF;
+  margin-right: 10px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.legs {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.leg-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.leg-flight-rows {
+  width: 275px;
+}
+
+.direction-label {
+  background: #F2F2F2;
+
+  width: 100px;
+  flex-direction: flex-end;
+
+  margin-right: 10px;
+}
+/* .payment-wrapper {
+  margin-bottom: 20px;
+  font-family: sans-serif;
+}
+.field {
+  font-weight: bold;
+}
+
+.leg-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.leg-flight-rows {
+  flex-grow: 5;
+}
+
+.direction-label {
+  flex-grow: 1;
+  background: #F2F2F2;
+  text-align: right;
+  vertical-align: middle;
+} */
