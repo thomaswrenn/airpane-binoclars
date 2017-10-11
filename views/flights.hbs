@@ -1,0 +1,80 @@
+{{!--{{#each items as |item|}}
+  <div class="payment-wrapper">
+    <div><span class="field">${{item.price}}</span></div>
+    <div class="leg-row">
+      {{#each item.there as |flight|}}
+        <div class="leg-flight-rows">
+          <div><span class="field">{{flight.airline}} {{flight.flight_no}}</span></div>
+          <div>
+            <span>{{flight.flyFrom}}</span> <span class="field">{{flight.departureTime}}</span> <span>{{flight.departureTimeUTC}}</span>
+          </div>
+          <div>
+            <span>{{flight.flyTo}}</span> <span class="field">{{flight.arrivalTime}}</span> <span>{{flight.arrivalTimeUTC}}</span>
+          </div>
+        </div>
+      {{/each}}
+      <div class="direction-label">
+        <span class="field">There</span>
+      </div>
+    </div>
+    <br />
+    <div class="leg-row">
+      {{#each item.back as |flight|}}
+        <div class="leg-flight-rows">
+          <div><span class="field">{{flight.airline}} {{flight.flight_no}}</span></div>
+          <div>
+            <span>{{flight.flyFrom}}</span> <span class="field">{{flight.departureTime}}</span> <span>{{flight.departureTimeUTC}}</span>
+          </div>
+          <div>
+            <span>{{flight.flyTo}}</span> <span class="field">{{flight.arrivalTime}}</span> <span>{{flight.arrivalTimeUTC}}</span>
+          </div>
+        </div>
+      {{/each}}
+      <div class="direction-label">
+        <span class="field">Back</span>
+      </div>
+    </div>
+  </div>
+{{/each}}--}}
+{{#each searchResults as |searchResult|}}
+  <div class="result">
+    <div class="resultInfo vertical-center" title="{{searchResult.effectiveWeight.string}}">
+      <div><a class="field" target="_blank" href="{{searchResult.deepLink}}">${{searchResult.price}}</a></div>
+      <div>{{duration.total.string}}</div>
+    </div>
+    <div class="legs">
+      <div class="leg-row">
+        <div class="direction-label vertical-center">
+          <span class="field">There</span>
+        </div>
+        {{#each searchResult.there.flights as |flight|}}
+          <div class="leg-flight-rows">
+            <div><span class="field">{{flight.airline}} {{flight.flight_no}}</span></div>
+            <div>
+              <span class="airportLabel">{{flight.flyFrom}}</span> <span class="field">{{flight.departure.time.local.string}}</span>
+            </div>
+            <div>
+              <span class="airportLabel">{{flight.flyTo}}</span> <span class="field">{{flight.arrival.time.local.string}}</span>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+      <div class="leg-row">
+        <div class="direction-label vertical-center">
+          <span class="field">Back</span>
+        </div>
+        {{#each searchResult.back.flights as |flight|}}
+          <div class="leg-flight-rows">
+            <div><span class="field">{{flight.airline}} {{flight.flight_no}}</span></div>
+            <div>
+              <span class="airportLabel">{{flight.flyFrom}}</span> <span class="field">{{flight.departure.time.local.string}}</span>
+            </div>
+            <div>
+              <span class="airportLabel">{{flight.flyTo}}</span> <span class="field">{{flight.arrival.time.local.string}}</span>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+{{/each}}
