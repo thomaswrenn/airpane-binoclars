@@ -1,5 +1,5 @@
 {
-  "name": "unemployment_filling",
+  "name": "airpane-binoclars",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -35,11 +35,11 @@
     "babel-preset-stage-1": "^6.5.0",
     "babel-register": "^6.9.0",
     "lodash": "^4.17.4",
-    "moment": "^2.17.1",
+    "moment": "^2.18.1",
     "moment-duration-format": "^1.3.0",
     "express": "*",
     "express-handlebars": "*",
-    "request": "^2.79.0",
+    "request": "^2.83.0",
     "request-promise-native": "^1.0.5"
   },
   "engines": {

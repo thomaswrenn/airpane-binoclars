@@ -170,7 +170,7 @@ app.get('/', function (request, response) {
           const musts = [
             flightStartsAndEndsWithinHoursOnSameDay(there, '05:00', '24:00') &&
               flightStartsAndEndsWithinHoursOnSameDay(back, '05:00', '24:00'),
-            (timeOnDate(back.start.time, '2017-11-24') && flightStartsAfterTime(back, `${13+4}:00`)) || 
+            (timeOnDate(back.start.time, '2017-11-24') && flightStartsAfterTime(back, `${13+4}:00`)) ||
               !timeOnDate(back.start.time, '2017-11-24')
           ];
           const options = [
@@ -204,132 +204,8 @@ app.get('/', function (request, response) {
         })
         .sortBy('effectiveWeight.number')
         .value();
-      response.render('flights', { searchResults });
+      response.render('partials/flights', { searchResults });
     });
 });
 
 var listener = app.listen(process.env.PORT, () => console.log('Your app is listening on port ' + listener.address().port));
-
-// import calculate from './calculate.js';
-
-// import moment from 'moment';
-
-// import requestPromise from 'request-promise-native';
-// import qs from 'querystring';
-
-// import express from 'express';
-// import exphbs from 'express-handlebars';
-
-
-// var app = express();
-
-// app.engine('.hbs', exphbs({
-//   extname: '.hbs',
-//   defaultLayout: 'main',
-//   partialsDir: 'views/partials',
-//   layoutsDir: 'views/layouts'
-// }));
-// app.set('view engine', '.hbs');
-
-// app.use(express.static('public'));
-
-// app.get('/', function (request, response) {
-//   const queryParams = {
-//     typeFlight: 'round',
-//     flyDaysType: 'departure',
-//     returnFlyDaysType: 'arrival',
-
-//     flyFrom: '37.8--122.27-74km',
-//     to: '40.79--74.27-325km',
-//     dateFrom: '17/11/2017',
-//     dateTo: '23/11/2017',
-//     returnFrom: '23/11/2017',
-//     returnTo: '27/11/2017',
-
-//     passengers: 1,
-//     adults: 1,
-//     children: 0,
-//     infants: 0,
-
-//     price_from: 0,
-//     price_to: 1100,
-
-//     curr: 'USD',
-//     locale: 'en',
-//     innerLimit: 300,
-//     sort: 'quality',
-//   };
-//   return requestPromise(`https://api.skypicker.com/flights?${qs.stringify(queryParams)}`)
-//     .then((rawResult) => {
-//       // let {} = request.query;
-//       const result = JSON.parse(rawResult);
-//       response.render('flights', {
-//         items: result.data.map(({
-//           price,
-//           route,
-//         }) => {
-//           const timeFormat = 'YYYY-MM-DD h:mm:ss';
-//           const theRoute = route
-//               .map(({ 
-//                 airline,
-//                 flight_no,
-//                 flyFrom,
-//                 flyTo,
-//                 return: isReturn,
-
-//                 dTime: departureTime,
-//                 dTimeUTC: departureTimeUTC,
-//                 aTime: arrivalTime,
-//                 aTimeUTC: arrivalTimeUTC,
-//               }) => {
-//                 return {
-//                   airline,
-//                   flight_no,
-//                   flyFrom,
-//                   flyTo,
-//                   direction: isReturn ? 'Back' : 'There',
-
-//                   departureTime: moment(departureTime * 1000).format(timeFormat),
-//                   departureTimeUTC: moment.utc(departureTimeUTC * 1000).format(timeFormat),
-//                   arrivalTime: moment(arrivalTime * 1000).format(timeFormat),
-//                   arrivalTimeUTC: moment.utc(arrivalTimeUTC * 1000).format(timeFormat),
-//                 };
-//               });
-//           const there = {
-//             flights: theRoute.filter(flight => flight.direction === 'Back'),
-//             start: {
-//               time,
-//               location,
-//             },
-//             end: {
-//               time,
-//               location,
-//             },
-//             length,
-//             layovertime,
-//           };
-//           const back = {
-//             flights: theRoute.filter(flight => flight.direction === 'There'),
-//             start: {
-//               time,
-//               location,
-//             },
-//             end: {
-//               time,
-//               location,
-//             },
-//             length,
-//             layovertime,
-//           };
-//           return {
-//             price,
-            
-//             there,
-//             back,
-//           };
-//         })
-//       });
-//     })
-// });
-
-// var listener = app.listen(process.env.PORT, () => console.log('Your app is listening on port ' + listener.address().port));

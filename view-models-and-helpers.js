@@ -188,5 +188,6 @@ module.exports = {
   flightStartsAndEndsBetweenTimes,
   flightStartsAndEndsWithinHoursOnSameDay,
   flightStartsOnDays,
+
   timeOnDate,
 };
