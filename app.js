@@ -117,13 +117,6 @@ const offsetUrlGenerator = () => {
   }
 };
 
-const resultsPromise = new Promise((resolve, reject) => {
-  const uriGenerator = offsetUrlGenerator();
-  resolve(
-    getResults(uriGenerator)
-  );
-});
-
 var app = express();
 
 app.engine('.hbs', exphbs({
@@ -162,7 +155,7 @@ app.get('/', function (request, response) {
 //     innerLimit: 300,
 //     sort: 'quality',
 //   };
-  return resultsPromise
+  return getResults(offsetUrlGenerator())
     .then(results => {
       const searchResults = _(results)
         .map(searchResultViewmodel)
