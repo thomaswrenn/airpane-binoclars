@@ -129,44 +129,28 @@ app.set('view engine', '.hbs');
 
 app.use(express.static('public'));
 
+const logResultCount = (val) => {
+  console.log(val.length);
+  return val;
+}
 app.get('/', function (request, response) {
-//   const queryParams = {
-//     typeFlight: 'round',
-//     flyDaysType: 'departure',
-//     returnFlyDaysType: 'arrival',
-
-//     flyFrom: '37.8--122.27-74km',
-//     to: '40.79--74.27-325km',
-//     dateFrom: '17/11/2017',
-//     dateTo: '23/11/2017',
-//     returnFrom: '23/11/2017',
-//     returnTo: '27/11/2017',
-
-//     passengers: 1,
-//     adults: 1,
-//     children: 0,
-//     infants: 0,
-
-//     price_from: 0,
-//     price_to: 1100,
-
-//     curr: 'USD',
-//     locale: 'en',
-//     innerLimit: 300,
-//     sort: 'quality',
-//   };
   return getResults(offsetUrlGenerator())
     .then(results => {
       const searchResults = _(results)
         .map(searchResultViewmodel)
         .filter(({ there, back }) => {
-          const musts = [
+          // Must
+          return _.every([
             flightStartsAndEndsWithinHoursOnSameDay(there, '05:00', '24:00') &&
               flightStartsAndEndsWithinHoursOnSameDay(back, '05:00', '24:00'),
             (timeOnDate(back.start.time, '2017-11-24') && flightStartsAfterTime(back, `${13+4}:00`)) ||
               !timeOnDate(back.start.time, '2017-11-24')
-          ];
-          const options = [
+          ]);
+        })
+        .tap(logResultCount)
+        .filter(({ there, back }) => {
+          // Options
+          return _.some([
             // (
             //   flightStartsAndEndsWithinHoursOnSameDay(there, '05:00', '24:00') &&
             //   flightStartsAndEndsWithinHoursOnSameDay(back, '05:00', '24:00')
@@ -185,16 +169,20 @@ app.get('/', function (request, response) {
               // flightStartsAndEndsWithinHoursOnSameDay(there, '05:00', '24:00') &&
               // flightStartsAndEndsWithinHoursOnSameDay(back, '05:00', '24:00')
             true
-          ];
-          const mustnots = [
+          ]);
+        })
+        .tap(logResultCount)
+        .reject(({ there, back }) => {
+          // Must nots
+          return _.some([
             ['EWR', 'LGA', 'JFK'].includes(there.end.to) && flightEndsAfterTime(there, `${24-5}:00`),
             ['EWR', 'LGA', 'JFK'].includes(back.start.from) && !flightStartsAfterTime(back, `${5+5}:00`),
             timeOnDate(there.end.time, '2017-11-23') && flightEndsAfterTime(there, `0${11-4}:00`),
             timeOnDate(back.end.time, '2017-11-27') && flightEndsAfterTime(back, `${13-2}:30`),
             timeOnDate(there.start.time, '2017-11-23') && timeOnDate(there.end.time, '2017-11-24'),
-          ];
-          return (_.every(musts) && _.some(options) && !_.some(mustnots));
+          ]);
         })
+        .tap(logResultCount)
         .sortBy('effectiveWeight.number')
         .value();
       response.render('partials/flights', { searchResults });
