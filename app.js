@@ -30,9 +30,9 @@ const queryParams = {
     'BDL',
     'HVN',
 
-    // 'BWI',
-    // 'DCA',
-    // 'IAD',
+    'BWI',
+    'DCA',
+    'IAD',
 
     'EWR',
     'JFK',
@@ -62,10 +62,10 @@ const queryParams = {
     'TTN'
     //'BDL,BWI,DCA,EWR,HVN,IAD,JFK,LGA,PHL,BOS',//'40.22--74.74-325km',//'40.79--74.27-325km',//https://www.mapdevelopers.com/draw-circle-tool.php
   ].join(','),
-  dateFrom: '17/11/2017',
-  dateTo: '23/11/2017',
-  returnFrom: '24/11/2017',//'23/11/2017',
-  returnTo: '27/11/2017',
+  dateFrom: moment().add(2, 'weeks').format('DD/MM/YYYY'),//'17/11/2017',
+  dateTo: '31/03/2018',
+  returnFrom: moment().add(2, 'weeks').format('DD/MM/YYYY'),//'24/11/2017',//'23/11/2017',
+  returnTo: '09/04/2018',
 
   // 'flyDays[]': '5',
   // flyDaysType: 'departure',
