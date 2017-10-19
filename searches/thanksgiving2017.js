@@ -23,11 +23,6 @@ const query = Object.assign({}, baseQuery, oneAdult, notInsanePriced, fromSF, to
   dateTo: '23/11/2017',
   returnFrom: '24/11/2017',//'23/11/2017',
   returnTo: '27/11/2017',
-
-  // 'flyDays[]': '5',
-
-  // selectedStopoverAirports: 'IAD,DCA,BWI',
-  // selectedStopoverAirportsExclude: false,
 });
 
 const filter = resultsViewModel => _(resultsViewModel)
@@ -43,26 +38,7 @@ const filter = resultsViewModel => _(resultsViewModel)
   .tap(logResultCount)
   .filter(({ there, back }) => {
     // Options
-    return _.some([
-      // (
-      //   flightStartsAndEndsWithinHoursOnSameDay(there, '05:00', '24:00') &&
-      //   flightStartsAndEndsWithinHoursOnSameDay(back, '05:00', '24:00')
-      // ),
-      // (
-      //   flightStartsOnDays(there, ['Friday']) && flightStartsAfterTime(there, '15:30')
-      // ),
-      // (
-      //   flightStartsOnDays(back, ['Sunday']) && flightStartsAfterTime(there, '05:00')
-      // ),
-      // (
-      //   flightStartsOnDays(back, ['Saturday']) && flightStartsAfterTime(there, '13:00')
-      // ),
-      // flightStartsOnDays(there, ['Friday', 'Saturday', 'Sunday']) && flightStartsAfterTime(there, '13:00'),
-      // flightStartsOnDays(there, ['Wednesday', 'Saturday', 'Sunday']) //&&
-        // flightStartsAndEndsWithinHoursOnSameDay(there, '05:00', '24:00') &&
-        // flightStartsAndEndsWithinHoursOnSameDay(back, '05:00', '24:00')
-      true
-    ]);
+    return _.some([ true ]);
   })
   .tap(logResultCount)
   .reject(({ there, back }) => {

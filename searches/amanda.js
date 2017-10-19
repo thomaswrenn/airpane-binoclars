@@ -35,11 +35,6 @@ const query = Object.assign({}, baseQuery, oneAdult, notInsanePriced, fromDC, to
   dateTo,
   returnFrom,
   returnTo,
-
-  // 'flyDays[]': '5',
-
-  // selectedStopoverAirports: 'IAD,DCA,BWI',
-  // selectedStopoverAirportsExclude: false,
 });
 
 const filter = resultsViewModel => _(resultsViewModel)
@@ -53,34 +48,12 @@ const filter = resultsViewModel => _(resultsViewModel)
   .tap(logResultCount)
   .filter(({ there, back }) => {
     // Options
-    return _.some([
-      // (
-        // flightStartsAndEndsWithinHoursOnSameDay(there, '05:00', '24:00') &&
-      //   flightStartsAndEndsWithinHoursOnSameDay(back, '05:00', '24:00')
-      // ),
-      // (
-      //   flightStartsOnDays(there, ['Friday']) && flightStartsAfterTime(there, '15:30')
-      // ),
-      // (
-      //   flightStartsOnDays(back, ['Sunday']) && flightStartsAfterTime(there, '05:00')
-      // ),
-      // (
-      //   flightStartsOnDays(back, ['Saturday']) && flightStartsAfterTime(there, '13:00')
-      // ),
-      // flightStartsOnDays(there, ['Friday', 'Saturday', 'Sunday']) && flightStartsAfterTime(there, '13:00'),
-      // flightStartsOnDays(there, ['Wednesday', 'Saturday', 'Sunday']) //&&
-        // flightStartsAndEndsWithinHoursOnSameDay(there, '05:00', '24:00') &&
-        // flightStartsAndEndsWithinHoursOnSameDay(back, '05:00', '24:00')
-      true
-    ]);
+    return _.some([ true ]);
   })
   .tap(logResultCount)
   .reject(({ there, back }) => {
     // Must nots
-    return _.some([
-      // ['EWR', 'LGA', 'JFK'].includes(there.end.to) && flightEndsAfterTime(there, `${24-5}:00`),
-      // ['EWR', 'LGA', 'JFK'].includes(back.start.from) && !flightStartsAfterTime(back, `${5+5}:00`),
-    ]);
+    return _.some([]);
   })
   .sortBy('effectiveWeight.number')
   .value();
