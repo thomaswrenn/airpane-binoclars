@@ -5,13 +5,7 @@ const {
   searchResultViewmodel,
 } = require('./viewModelsAndHelpers.js');
 
-const {
-  thanksgiving2017Filter,
-  thanksgiving2017Query,
-
-  nowTillEasterFilter,
-  nowTillEasterQuery,
-} = require('./searches/index');
+const availableSearchesHash = require('./searches/index');
 
 const {
   getResults,
@@ -30,13 +24,24 @@ app.set('view engine', '.hbs');
 
 app.use(express.static('public'));
 
-app.get('/', function (request, response) {
-  return getResults(offsetUrlGenerator(nowTillEasterQuery))
+const queryAndFilter = (apiQueryParams, filterFunction) =>
+  getResults(offsetUrlGenerator(apiQueryParams))
     .then(results => results.map(searchResultViewmodel))
-    .then(nowTillEasterFilter)
-    .then(filteredResults => {
-      response.render('partials/flights', { searchResults: filteredResults });
-    });
+    .then(filterFunction);
+
+app.get('/', function (request, response) {
+  return response.render('partials/404', { noSearchName: true, availableSearches: availableSearchesHash });
+});
+
+app.get('/:searchName', function (request, response) {
+  const { params: { searchName } } = request;
+  const search = availableSearchesHash[searchName];
+  if (!search)
+    return response.render('partials/404', { attemptedSearchName: searchName, availableSearches: availableSearchesHash });
+  const { query: apiQueryParams, filter: filterFunction } = search;
+  return queryAndFilter(apiQueryParams, filterFunction).then(filteredResults =>
+    response.render('partials/flights', { searchResults: filteredResults })
+  );
 });
 
 var listener = app.listen(process.env.PORT, () => console.log('Your app is listening on port ' + listener.address().port));

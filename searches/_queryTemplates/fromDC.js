@@ -1,5 +1,5 @@
 module.exports = {
-    to: [
+    flyFrom: [
         'DCA',
         'IAD',
         'BWI',

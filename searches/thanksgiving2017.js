@@ -78,4 +78,8 @@ const filter = resultsViewModel => _(resultsViewModel)
   .sortBy('effectiveWeight.number')
   .value();
 
-module.exports = { query, filter };
+module.exports = {
+  name: 'Thanksgiving 2017',
+  query,
+  filter,
+};

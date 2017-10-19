@@ -1,7 +1,7 @@
 module.exports = {
     to: [
-        'DCA',
-        'IAD',
-        'BWI',
+      'SFO',
+      'OAK',
+      'SJC',
     ].join(','),
 };

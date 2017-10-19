@@ -178,6 +178,13 @@ const searchResultViewmodel = (allOfIt) => {
   };
 };
 
+const getStartOfNextWeekend = (date) => {
+  const isSunday = (date.day() <= 0);
+  return date.startOf('week').add(isSunday ? 0 : 1, 'week').day(5);
+};
+const getFridayBefore = date => date.day(date.day() >= 5 ? 5 :-2);
+const getTwoMondaysFromDate = date => date.startOf('week').day(1).add(1, 'week');
+
 module.exports = {
   flightViewmodel,
   routeViewmodel,
@@ -188,6 +195,10 @@ module.exports = {
   flightStartsAndEndsBetweenTimes,
   flightStartsAndEndsWithinHoursOnSameDay,
   flightStartsOnDays,
+
+  getStartOfNextWeekend,
+  getFridayBefore,
+  getTwoMondaysFromDate,
 
   timeOnDate,
 };

@@ -1,0 +1,11 @@
+{{#unless noSearchName}}
+  <div>No "{{attemptedSearchName}}" search.</div>
+{{/unless}}
+<div>Available Searches:</div>
+<ul>
+  {{#each availableSearches as |search|}}
+    <li>
+      <a href="/{{@key}}">{{search.name}}</a>
+    </li>
+  {{/each}}
+</ul>
