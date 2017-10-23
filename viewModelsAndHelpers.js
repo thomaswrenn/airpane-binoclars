@@ -157,11 +157,6 @@ const searchResultViewmodel = (allOfIt) => {
     },
   };
 
-  const hours = _.get(durationViewmodel, 'total.seconds')/60/60;
-  const dollarsPerHour = 70;
-  const hourPenalty = (Math.max(0, hours - 11) * dollarsPerHour);
-  const locationPenalty = there.end.to !== 'BDL' ? 30 + (4 * dollarsPerHour) : 0;
-
   return {
     price,
     deepLink: deepUrlFromIdAndBookingToken(id, booking_token),
@@ -170,11 +165,6 @@ const searchResultViewmodel = (allOfIt) => {
     back,
     start: there.start,
     end: back.end,
-
-    effectiveWeight: {
-      number: price + hourPenalty + locationPenalty,
-      string: `$${price} (+ $${hourPenalty} + $${locationPenalty})`,
-    },
   };
 };
 

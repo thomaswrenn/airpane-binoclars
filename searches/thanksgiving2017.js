@@ -26,6 +26,20 @@ const query = Object.assign({}, baseQuery, oneAdult, notInsanePriced, fromSF, to
 });
 
 const filter = resultsViewModel => _(resultsViewModel)
+  .map((viewModel) => {
+    const hours = _.get(viewModel, 'duration.total.seconds')/60/60;
+    const dollarsPerHour = 70;
+    const hourPenalty = (Math.max(0, hours - 11) * dollarsPerHour);
+    const { there, price } = viewModel;
+    const locationPenalty = there.end.to !== 'BDL' ? 30 + (4 * dollarsPerHour) : 0;
+
+    return Object.assign(viewModel, {
+      effectiveWeight: {
+        number: price + hourPenalty + locationPenalty,
+        string: `$${price} (+ $${hourPenalty} + $${locationPenalty})`,
+      },
+    });
+  })
   .filter(({ there, back }) => {
     // Must
     return _.every([

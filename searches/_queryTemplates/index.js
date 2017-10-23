@@ -8,6 +8,7 @@ module.exports = {
 
     fromSF: require('./fromSF'),
     fromDC: require('./fromDC'),
+    fromSheffieldish: require('./fromSheffieldish'),
 
     toDCOrCTIncludingNYCAndBoston: require('./toDCOrCTIncludingNYCAndBoston'),
     toCTIncludingNYCAndBoston: require('./toCTIncludingNYCAndBoston'),
