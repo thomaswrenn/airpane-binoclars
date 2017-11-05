@@ -54,7 +54,7 @@ const formatArray = (arr, format) => {
   return arr.map(time => moment(time).format(format));
 }
 
-const getFlightStartAndEnd = flight => ({
+const getFlightStartAndEnd = (flight) => ({
   start: flight.start.time.local.iso,
   end:   flight.end.time.local.iso,
 });
@@ -97,7 +97,7 @@ const flightStartsOnDays = (flight, startDaysArray) => {
   return (startDaysArray.includes(startDay));
 };
 
-const routeViewmodel = flights => {
+const routeViewmodel = (flights) => {
   const startFlight = _.minBy(flights, flight => flight.departure.time.utc.iso);
   const endFlight = _.maxBy(flights, flight => flight.arrival.time.utc.iso);
   return {
@@ -175,6 +175,12 @@ const getStartOfNextWeekend = (date) => {
 const getFridayBefore = date => date.day(date.day() >= 5 ? 5 :-2);
 const getTwoMondaysFromDate = date => date.startOf('week').day(1).add(1, 'week');
 
+const tripDaysLength = (there, back) => {
+  const { start } = getFlightStartAndEnd(there);
+  const { end } = getFlightStartAndEnd(back);
+  return moment(end).diff(moment(start), 'days');
+};
+
 module.exports = {
   flightViewmodel,
   routeViewmodel,
@@ -189,6 +195,8 @@ module.exports = {
   getStartOfNextWeekend,
   getFridayBefore,
   getTwoMondaysFromDate,
+
+  tripDaysLength,
 
   timeOnDate,
 };

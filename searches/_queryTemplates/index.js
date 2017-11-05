@@ -5,6 +5,7 @@ module.exports = {
     twoAdults: require('./twoAdults'),
 
     notInsanePriced: require('./notInsanePriced'),
+    weekendFlightsOnly: require('./weekendFlightsOnly'),
 
     fromSF: require('./fromSF'),
     fromDC: require('./fromDC'),
